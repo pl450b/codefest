@@ -135,7 +135,7 @@ def remove_user(username):
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
-        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n")
+        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n4) Remove User")
         
         selection = input()
 
