@@ -22,7 +22,7 @@ const RewardsPage = () => {
     <div className="rewards-page">
       <h1 className="rewards-title">My Rewards</h1>
 
-    <div class="stats-and-challenges">
+      <div class="stats-and-challenges">
         <div className="user-stats">
             <h2 className="section-title">User Statistics</h2>
             <div className="stats-info">
@@ -31,11 +31,11 @@ const RewardsPage = () => {
             <p>Current Streak: <span>{userStats.currentStreak} days</span></p>
             <p>Global Ranking: <span>#{userStats.ranking}</span></p>
             </div>
-        </div>
+      </div>
 
-        <div className="recent-challenges">
-            <h2 className="section-title">Recent Challenges</h2>
-            <ul>
+      <div className="recent-challenges">
+        <h2 className="section-title">Recent Challenges</h2>
+          <ul>
             {recentChallenges.map((challenge) => (
                 <li key={challenge.id} className="challenge-item">
                 {challenge.name} - <span>+{challenge.points} pts</span>
@@ -43,7 +43,7 @@ const RewardsPage = () => {
                 <small>Completed: {challenge.completed}</small>
                 </li>
             ))}
-            </ul>
+          </ul>
         </div>
       </div>
     </div>

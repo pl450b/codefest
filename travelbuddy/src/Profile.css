@@ -2,8 +2,6 @@
 .profile-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100vw;
     padding: 0;
     height: calc(100vh);    
@@ -35,7 +33,6 @@
 
 .profile-change-container button {
     padding: 10px 20px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -43,21 +40,47 @@
     transition: background-color 0.3s ease;
 }
 
-.profile-container button:hover {
+.profile-change-container {
+    display: flex;
+    align-items: center; /* Centers the challenge cards vertically */
+    flex-direction: column;
+}
+
+.delete_btn{
+    background-color: red;
+}
+
+.delete_btn:hover{
+    background-color: rgb(188, 0, 0);
+}
+
+.update_btn{
+    background-color: #4CAF50;
+}
+
+.update_btn:hover {
     background-color: #45a049;
 }
 
-.profile-navbar {
+.update_photo{
     display: flex;
-    justify-content: flex-start; /* Align the hamburger to the left */
-    width: 100%;
-    padding: 10px 0 0 45px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.profile-change-container {
-    flex: 1;
+.account-info{
+
     display: flex;
-    justify-content: space-evenly; /* Centers the challenge cards horizontally */
-    align-items: center; /* Centers the challenge cards vertically */
-    flex-direction: column;
+    flex-direction: row;
+    margin: 20px, 0px;
+    align-content: space-between;
+    width: 100vw;
+
+}
+
+.vertical-line{
+    width: 2px;
+    height: 100px;
+    background-color: black;
 }

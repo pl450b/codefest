@@ -9,10 +9,10 @@ export default function SignUp() {
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}/SignUp`;   
+    const url = `http://${ipAddress}:${port}`;   
 
     const handleSignUp = async () => {
-        const response = fetch(`${url}`, {
+        const response = await fetch(`${url}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,8 +26,8 @@ export default function SignUp() {
 
         if (response.ok) {
             // Store the JWT in localStorage
-            localStorage.setItem('token', data.token);
-            window.location.href = '/dashboard'; // Redirect to dashboard or survey
+            alert("User create!")
+            window.location.href = '/login'; // Redirect to login screen
         } else {
             alert(data.message);
         }
