@@ -1,0 +1,106 @@
+/* RewardsPage.css */
+  
+  .rewards-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    padding: 20px; /* Reduced padding */
+    box-sizing: border-box;
+    width: 100vw;
+  }
+
+  .stats-and-challenges{
+    display: flex;
+    justify-content: center;
+  }
+  
+  .rewards-title {
+    text-align: left;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    margin-left: 0;
+    padding: 0 10px;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #34495e;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+  }
+  
+  .user-stats, .recent-challenges {
+    flex: 1;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .stats-info p {
+    font-size: 1.3rem;
+    margin: 15px 0;
+  }
+  
+  .stats-info span {
+    font-weight: bold;
+    color: #2ecc71;
+  }
+  
+  .recent-challenges ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .challenge-item {
+    font-size: 1.2rem;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ecf0f1;
+    border-left: 5px solid #3498db;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .challenge-item span {
+    font-weight: bold;
+    color: #2980b9;
+  }
+  
+  .challenge-item:hover {
+    background-color: #d0e7f9;
+  }
+  
+  .challenge-item small {
+    display: block;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-top: 5px;
+  }
+  
+  /* Minimal padding on very large screens */
+  @media screen and (min-width: 1400px) {
+    .rewards-page {
+      padding: 20px 10px;
+    }
+  }
+  
+  /* Added better spacing for smaller screens */
+  @media screen and (max-width: 768px) {
+    .rewards-page {
+      padding: 10px;
+    }
+    
+    .user-stats, .recent-challenges {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
