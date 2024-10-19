@@ -36,19 +36,15 @@ def attempt_login(username, password):
         query = sql.SQL("SELECT EXISTS (SELECT 1 FROM auth WHERE username = %s AND hash = %s);")
 
         # Execute the SQL query
-        cursor.execute(query, (username, hash))
+        cursor.execute(query, (username, hash_pass(password)))
 
         # Fetch the result
         fetched_hash = cursor.fetchone()[0]
-        if hash:
-            if hash == hash_pass(password):
-                print("Login succesfull!")
-                return True
-            else:
-                print("Incorrect password")
-                return False
+
+        if fetched_hash:
+            print("Login successfull!")
         else:
-            print("User does not exist")
+            print("Login failure")
             return False
 
     except Exception as error:
@@ -74,7 +70,7 @@ def add_user(username, password):
         
         cursor = connection.cursor()
 
-        query = sql.SQL("SELECT COUNT(*) FROM your_table_name WHERE username = %s;")
+        query = sql.SQL("SELECT COUNT(*) FROM auth WHERE username = %s;")
 
         cursor.execute(query, (username,))
         count = cursor.fetchone()[0]
@@ -84,8 +80,8 @@ def add_user(username, password):
             return False
         else:
             # add new user to database
-            query = sql.SQL("CREATE USER {} WITH PASSWORD %s;").format(sql.Indentifier(username))
-            cursor.execute(query, (hash_pass(password),))
+            query = sql.SQL(f"INSERT INTO auth (username, hash) VALUES (%s, %s);")
+            cursor.execute(query, (username, hash_pass(password)))
             connection.commit()
             print(f"User '{username}' created!!")
             return True
@@ -99,7 +95,8 @@ def add_user(username, password):
 
 if __name__ == "__main__":
     while True:
-        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Removing User\n")
+        print("\n----------------------------")
+        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n")
         
         selection = input()
 
@@ -108,4 +105,13 @@ if __name__ == "__main__":
             print(f"Hashed input: '{hash_pass(test_username)}'\n")
 
         if(selection == '2'):
-            test_username = input()
+            test_username = input("Enter username: ")
+            test_password = input("Enter password: ")
+
+            add_user(test_username, test_password)
+
+        if(selection == '3'):
+            test_username = input("Enter username: ")
+            test_password = input("Enter password: ")
+
+            attempt_login(test_username, test_password)
