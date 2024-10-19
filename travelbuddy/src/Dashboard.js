@@ -21,7 +21,6 @@ export default function Dashboard() {
     };
 
     return (
-        <div class="dashboard-container background-initial">
         <div className="dashboard-container">
             <Navbar />
             <div className="challenges-header-and-container">
@@ -62,8 +61,5 @@ export default function Dashboard() {
 
             </div>
         </div>
-        </div>
-    </div>       
-        
     );
 }
