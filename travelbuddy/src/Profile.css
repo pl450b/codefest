@@ -35,16 +35,11 @@
 
 .profile-change-container button {
     padding: 10px 20px;
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.profile-container button:hover {
-    background-color: #45a049;
 }
 
 .profile-navbar {
@@ -64,7 +59,18 @@
 
 .delete_btn{
     background-color: red;
+}
 
+.delete_btn:hover{
+    background-color: rgb(188, 0, 0);
+}
+
+.update_btn{
+    background-color: #4CAF50;
+}
+
+.update_btn:hover {
+    background-color: #45a049;
 }
 
 .update_photo{
