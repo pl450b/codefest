@@ -37,7 +37,7 @@ const TravelForm = () => {
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`;  
+    const url = `http://${ipAddress}:${port}/preferences`;  
 
     const response = fetch(`${url}`, {
         method: 'POST',

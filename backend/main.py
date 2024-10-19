@@ -5,7 +5,7 @@ from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from database_interaction import attempt_login, add_user
-from ai.py import *
+from ai import *
 # Load environment variables from .env file
 load_dotenv()
 
@@ -91,6 +91,11 @@ def make_login():
         print(f"failed to add user {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
         return jsonify({"message": "Failed to create user"}), 401
+
+@app.route('/preferences', methods=['POST'])
+def record_preferences():
+    data = request.json.get()
+    print(data)
 
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
