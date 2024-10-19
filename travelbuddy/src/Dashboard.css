@@ -1,13 +1,19 @@
 /* Dashboard.css */
 .dashboard-container {
     background-image: url('/public/imgs/lakeMountains.jpeg');
+    background-attachment: fixed; 
     background-repeat: no-repeat;
     background-size: cover;
     width: 100vw; /* Ensure full width of the viewport */   
-    height: calc(100vh); /* Full height of the viewport */
+    height: calc(100vh);  /* Full height of the viewport */
+    /* height: auto; */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    transition: background-image 0.5s ease-in-out;
 }
+
+
 
 .challenges-header {
     font-size: 4em;
@@ -16,7 +22,6 @@
     padding: 20px 20px;
     background-color: rgba(247, 209, 163, .4);
     border-radius: 7px;
-    /* text-decoration: underline #ffffff; */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
