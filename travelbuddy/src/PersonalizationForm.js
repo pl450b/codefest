@@ -52,81 +52,83 @@ const TravelForm = () => {
   };
 
   return (
-      <div class="personalization">
-        <form className="container" onSubmit={handleSubmit}>
-          <h2>Tell Us About Your Travel Style</h2>
+      <div>
+        <div class="personalization">
+          <form className="form-container" onSubmit={handleSubmit}>
+            <h2>Tell Us About Your Travel Style</h2>
 
-          {/* Travel Frequency */}
-          <Category title="How often do you travel?">
-              {["Rarely", "Occasionally", "Frequently", "Always on the go"].map((option) => (
-              <Interest
-                  key={option}
-                  isSelected={selectedInterests.travelFrequency === option}
-                  onClick={() => toggleSelection("travelFrequency", option)}
-              >
-                  {option}
-              </Interest>
-              ))}
-          </Category>
+            {/* Travel Frequency */}
+            <Category title="How often do you travel?">
+                {["Rarely", "Occasionally", "Frequently", "Always on the go"].map((option) => (
+                <Interest
+                    key={option}
+                    isSelected={selectedInterests.travelFrequency === option}
+                    onClick={() => toggleSelection("travelFrequency", option)}
+                >
+                    {option}
+                </Interest>
+                ))}
+            </Category>
 
-          {/* Preferred Travel Destinations */}
-          <Category title="What type of destinations do you prefer?">
-              {["Cities", "Beaches", "Mountains", "Cultural sites", "Off-the-beaten-path"].map((option) => (
-              <Interest
-                  key={option}
-                  isSelected={selectedInterests.travelDestinations.includes(option)}
-                  onClick={() => toggleSelection("travelDestinations", option)}
-              >
-                  {option}
-              </Interest>
-              ))}
-          </Category>
+            {/* Preferred Travel Destinations */}
+            <Category title="What type of destinations do you prefer?">
+                {["Cities", "Beaches", "Mountains", "Cultural sites", "Off-the-beaten-path"].map((option) => (
+                <Interest
+                    key={option}
+                    isSelected={selectedInterests.travelDestinations.includes(option)}
+                    onClick={() => toggleSelection("travelDestinations", option)}
+                >
+                    {option}
+                </Interest>
+                ))}
+            </Category>
 
-          {/* Travel Personality */}
-          <Category title="What type of traveler are you?">
-              {["Detailed planner", "Somewhat organized", "Totally spontaneous"].map((option) => (
-              <Interest
-                  key={option}
-                  isSelected={selectedInterests.travelPersonality === option}
-                  onClick={() => toggleSelection("travelPersonality", option)}
-              >
-                  {option}
-              </Interest>
-              ))}
-          </Category>
+            {/* Travel Personality */}
+            <Category title="What type of traveler are you?">
+                {["Detailed planner", "Somewhat organized", "Totally spontaneous"].map((option) => (
+                <Interest
+                    key={option}
+                    isSelected={selectedInterests.travelPersonality === option}
+                    onClick={() => toggleSelection("travelPersonality", option)}
+                >
+                    {option}
+                </Interest>
+                ))}
+            </Category>
 
-          {/* Travel Habits */}
-          <Category title="How do you prefer to spend your time when traveling?">
-              {["Sightseeing", "Relaxing by the pool", "Outdoor activities", "Learning about history/culture"].map((option) => (
-              <Interest
-                  key={option}
-                  isSelected={selectedInterests.travelHabits.includes(option)}
-                  onClick={() => toggleSelection("travelHabits", option)}
-              >
-                  {option}
-              </Interest>
-              ))}
-          </Category>
+            {/* Travel Habits */}
+            <Category title="How do you prefer to spend your time when traveling?">
+                {["Sightseeing", "Relaxing by the pool", "Outdoor activities", "Learning about history/culture"].map((option) => (
+                <Interest
+                    key={option}
+                    isSelected={selectedInterests.travelHabits.includes(option)}
+                    onClick={() => toggleSelection("travelHabits", option)}
+                >
+                    {option}
+                </Interest>
+                ))}
+            </Category>
 
-          {/* Documenting Travel */}
-          <Category title="How do you document your travels?">
-              {["Photos", "Social media posts", "Journaling", "I prefer to stay in the moment"].map((option) => (
-              <Interest
-                  key={option}
-                  isSelected={selectedInterests.documentingTravel === option}
-                  onClick={() => toggleSelection("documentingTravel", option)}
-              >
-                  {option}
-              </Interest>
-              ))}
-          </Category>
+            {/* Documenting Travel */}
+            <Category title="How do you document your travels?">
+                {["Photos", "Social media posts", "Journaling", "I prefer to stay in the moment"].map((option) => (
+                <Interest
+                    key={option}
+                    isSelected={selectedInterests.documentingTravel === option}
+                    onClick={() => toggleSelection("documentingTravel", option)}
+                >
+                    {option}
+                </Interest>
+                ))}
+            </Category>
 
-          {/* Submit Button */}
-          <button type="submit" className="submit-button">
-              Submit
-          </button>
-        </form>
-      </div>  
+            {/* Submit Button */}
+            <button type="submit" className="submit-button">
+                Submit
+            </button>
+          </form>
+        </div>  
+      </div>
   );
 };
 
