@@ -33,7 +33,7 @@ const Profile = () => {
             <Navbar />
             <div class="profile-change-container">
                 <h1>Account Settings</h1>
-                <div class="">
+                <div class="update_photo">
                     <div className="profile-picture">
                         <img src={imageUrl} alt="Profile" />
                     </div>

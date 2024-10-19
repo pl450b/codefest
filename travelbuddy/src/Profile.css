@@ -61,3 +61,15 @@
     align-items: center; /* Centers the challenge cards vertically */
     flex-direction: column;
 }
+
+.delete_btn{
+    background-color: red;
+
+}
+
+.update_photo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
