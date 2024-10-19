@@ -62,6 +62,7 @@ def attempt_login(username, password):
         return return_val
 
 def add_user(username, password):
+    return_val = False
     try:
         # Connect to the PostgreSQL server
         connection = psycopg2.connect(
@@ -79,14 +80,14 @@ def add_user(username, password):
 
         if count > 0:
             print("User already exists")
-            return False
+            return_val = False
         else:
             # add new user to database
             query = sql.SQL(f"INSERT INTO auth (username, hash) VALUES (%s, %s);")
             cursor.execute(query, (username, hash_pass(password)))
             connection.commit()
             print(f"User '{username}' created!!")
-            return True
+            return_val = True
 
     finally:
         # Close the cursor and connection
@@ -94,6 +95,7 @@ def add_user(username, password):
             cursor.close()
         if connection:
             connection.close()
+        return return_val
 
 def remove_user(username):
     try:
