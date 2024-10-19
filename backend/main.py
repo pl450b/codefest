@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Route to handle GET request
 @app.route('/', methods=['GET'])
@@ -8,11 +10,15 @@ def index():
     return jsonify({"message": "Hello from Python backend!"})
 
 # Route to handle POST request (e.g., receiving data from Node.js server)
-@app.route('/data', methods=['POST'])
+@app.route('/', methods=['POST'])
 def receive_data():
     # Get JSON data from the request
     data = request.get_json()
-    
+    username = data.get("username")
+    password = data.get("password")
+
+    if(username == "Wes"):
+        print("Wes in the house!!")
     # Log or process the data
     print("Data received from Node.js:", data)
 

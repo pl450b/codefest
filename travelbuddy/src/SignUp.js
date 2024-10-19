@@ -4,7 +4,7 @@ import { Link }  from 'react-router-dom'
 function send_signup_credentials() {
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`;
+    const url = `http://${ipAddress}:${port}/`;
 
     const fetchRequest = fetch(url, {
         method: 'POST',
