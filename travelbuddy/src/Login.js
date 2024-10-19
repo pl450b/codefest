@@ -38,7 +38,7 @@ export default function Login() {
             <div class="login-container">
                 <form class="login-form">
                     <div class="form-header-group">
-                        <img class="bonvoy-img" src="bonvoy-logo.png" alt="Mariott Bonvoy Logo" width="50%"></img>
+                        <img class="bonvoy-img" src="./imgs/bonvoy-logo.png" alt="Mariott Bonvoy Logo" width="50%"></img>
                         <h1 class="testing">Login</h1>
                     </div>
                     <div class="input-group">
