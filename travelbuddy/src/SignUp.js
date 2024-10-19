@@ -9,7 +9,7 @@ export default function SignUp() {
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`;   
+    const url = `http://${ipAddress}:${port}/SignUp`;   
 
     const handleSignUp = async () => {
         const response = fetch(`${url}`, {

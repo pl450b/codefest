@@ -10,7 +10,7 @@ export default function Login() {
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`;
+    const url = `http://${ipAddress}:${port}/login`;
 
     const handleLogin = async () => {
         const response = fetch(`${url}`, {

@@ -42,9 +42,9 @@ def verify_jwt(token):
 def login():
     print("hhashdahsdhasdhashdashdhasdh")
     # Extract username and password from the JSON body of the POST request
-    username = request.get_json.get('username')
-    password = request.get_json.get('password')
-    printf(f"Got {username} and {password}")    
+    username = request.json.get('username')
+    password = request.json.get('password')
+    print(f"Got {username} and {password}")    
     # Example validation (replace with actual logic to check user credentials)
     if attempt_login(username, password):
         print(f"Login from {username}")
