@@ -40,11 +40,10 @@ def verify_jwt(token):
 # Route to handle user login
 @app.route('/login', methods=['POST'])
 def login():
-    print("hhashdahsdhasdhashdashdhasdh")
     # Extract username and password from the JSON body of the POST request
-    username = request.get_json.get('username')
-    password = request.get_json.get('password')
-    printf(f"Got {username} and {password}")    
+    username = request.json.get('username')
+    password = request.json.get('password')
+    print(f"Got {username} and {password}")    
     # Example validation (replace with actual logic to check user credentials)
     if attempt_login(username, password):
         print(f"Login from {username}")
@@ -75,7 +74,27 @@ def index():
     return jsonify({"message": "Hello from Python backend!"})  # No valid token, greet the user
 @app.route('/', methods=['POST'])
 def god_help_us():
-    print("received at root")
+    # Extract username and password from the JSON body of the POST request
+    username = request.json.get('username')
+    password = request.json.get('password')
+    print(f"Got {username} and {password}")    
+    # Example validation (replace with actual logic to check user credentials)
+    if add_user(username, password):
+        print(f"Login from {username}")
+        user_id = 1  # Replace with actual user ID
+        # Generate a JWT for the authenticated user
+        token = generate_jwt(user_id)
+        
+        # Create a response to send back to the client
+        response = make_response(jsonify({"message": "Login successful!"}))
+        # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
+        response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
+        
+        return response  # Return the response to the client
+    else:
+        print(f"failed login from {username}")
+        # Return a 401 Unauthorized response if the credentials are invalid
+        return jsonify({"message": "Invalid credentials"}), 401
 # Start the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

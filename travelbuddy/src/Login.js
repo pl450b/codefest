@@ -10,10 +10,10 @@ export default function Login() {
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`;
+    const url = `http://${ipAddress}:${port}/login`;
 
     const handleLogin = async () => {
-        const response = fetch(`${url}`, {
+        const response = await fetch(`${url}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,15 +21,14 @@ export default function Login() {
             body: JSON.stringify({ username, password }),
         });
 
-        // const data = await response.json();
-        // if (response.ok) {
-        //     // Store the JWT in localStorage
-        //     localStorage.setItem('token', data.token);
-        //     alert('Login successful!');
-        //     window.location.href = '/dashboard'; // Redirect to dashboard or survey
-        // } else {
-        //     alert(data.message);
-        // }
+        const data = await response.json();
+        if (response.ok) {
+            localStorage.setItem('sessionToken', data.token);
+            alert('Login successful!');
+            window.location.href = '/dashboard'; // Redirect to dashboard or survey
+        } else {
+            alert(data.message);
+        }
     };
 
 

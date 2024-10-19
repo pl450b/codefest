@@ -42,7 +42,7 @@ def attempt_login(username, password):
         fetched_hash = cursor.fetchone()[0]
 
         if fetched_hash:
-            print("Login successfull!")
+            print("[DATABASE] Login successfull!")
         else:
             print("Login failure")
             return False
@@ -57,6 +57,7 @@ def attempt_login(username, password):
             cursor.close()
         if connection:
             connection.close()
+        return True
 
 def add_user(username, password):
     try:
