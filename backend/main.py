@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-
+from database_interaction import attempt_login, add_user
 # Load environment variables from .env file
 load_dotenv()
 
@@ -29,6 +29,7 @@ def generate_jwt(user_id):
 def verify_jwt(token):
     try:
         # Decode the token using the secret key and validate it with the HS256 algorithm
+        print(f"Fetched: {fetched_hash}, Hash: {hash_pass(password)}")
         decoded = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
         return decoded  # Return the decoded payload if verification is successful
     except jwt.ExpiredSignatureError:
@@ -39,12 +40,14 @@ def verify_jwt(token):
 # Route to handle user login
 @app.route('/login', methods=['POST'])
 def login():
+    print("hhashdahsdhasdhashdashdhasdh")
     # Extract username and password from the JSON body of the POST request
-    username = request.json.get('username')
-    password = request.json.get('password')
-    
+    username = request.get_json.get('username')
+    password = request.get_json.get('password')
+    printf(f"Got {username} and {password}")    
     # Example validation (replace with actual logic to check user credentials)
-    if username == 'user' and password == 'password':
+    if attempt_login(username, password):
+        print(f"Login from {username}")
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
@@ -56,19 +59,23 @@ def login():
         
         return response  # Return the response to the client
     else:
+        print(f"failed login from {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
         return jsonify({"message": "Invalid credentials"}), 401
 
 # Route to verify the JWT from the user's cookie and return a message
 @app.route('/', methods=['GET'])
 def index():
+    print("Hit index()")
     # Retrieve the 'user_token' from cookies
     user_token = request.cookies.get('user_token')
     # Check if the token exists and is valid
     if user_token and verify_jwt(user_token):
         return jsonify({"message": "Welcome back! You are still logged in."})  # Valid token, user is logged in
     return jsonify({"message": "Hello from Python backend!"})  # No valid token, greet the user
-
+@app.route('/', methods=['POST'])
+def god_help_us():
+    print("received at root")
 # Start the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
