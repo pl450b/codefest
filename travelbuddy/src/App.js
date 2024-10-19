@@ -2,7 +2,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import PersonalizationForm from './PersonalizationForm'
 import Dashboard from './Dashboard'
-
+import Profile from './Profile'
 import './App.css';
 import './SignUp.css';
 import './Login.css';
@@ -19,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/survey" element={<PersonalizationForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

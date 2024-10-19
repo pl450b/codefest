@@ -47,7 +47,7 @@ const TravelForm = () => {
         body: JSON.stringify({ selectedInterests }),
     });
 
-    alert("Form submitted! Check the console for selected preferences.");
+    window.location.href = "/dashboard"
     // You can replace this with an API call or another action.
   };
 
