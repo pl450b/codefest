@@ -1,24 +1,84 @@
-.challenge-container{
+.challenge-card {
+    background: #fef9e7;
+    border: 2px solid #d4a373;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 350px;
+    margin: 20px auto;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    color: #5a4635;
+    font-family: 'Georgia', serif;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px; /* Add padding for inner spacing */
-    background: linear-gradient(135deg, #99ccff, #ffffff); /* Soft white to a stronger blue */
-    border: 2px solid rgba(0, 0, 0, 0.1); /* Light border */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: soft shadow */
-}
-
-.challenge-description-container{
+    justify-content: space-between;
+    min-height: 300px; /* Adjusted for uniform card height */
+  }
+  
+  .challenge-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-header {
+    background-color: #f7d1a3;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid #d4a373;
+    min-height: 80px; /* Set default height for the header */
+  }
+  
+  .quest-name {
+    font-size: 1.8em;
+    margin: 0;
+    color: #6d4a2f;
+  }
+  
+  .card-body {
+    padding: 20px 0;
+    font-size: 1.1em;
+    flex-grow: 1; /* Allows the body to expand and take up remaining space */
+    min-height: 100px; /* Ensures a consistent minimum height */
+  }
+  
+  .description {
+    margin-bottom: 15px;
+    color: #6d4a2f;
+  }
+  
+  .reward-section {
+    background-color: #f8e8d2;
+    padding: 15px;
+    border-radius: 0 0 8px 8px;
+    border-top: 2px solid #d4a373;
+    min-height: 100px; /* Increased height for longer reward descriptions */
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.challenge-reward-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+    justify-content: flex-start; /* Align items at the top */
+  }
+  
+  .reward-section h3 {
+    margin-top: 10px; /* Set consistent distance from the top */
+    margin-bottom: 8px;
+    font-size: 1.2em;
+    color: #8c512b;
+  }
+  
+  .reward {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #c75b25;
+    white-space: normal; /* Allow reward text to wrap */
+  }
+  
+  .reward-section p {
+    margin: 0;
+  }
+  
+  @media (max-width: 500px) {
+    .challenge-card {
+      max-width: 90%;
+    }
+  }
+  
