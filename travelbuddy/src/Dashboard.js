@@ -2,23 +2,73 @@ import { useState } from 'react';
 import Challenge from './Challenge';
 import './Dashboard.css';
 import Navbar from './Navbar';
+import { QRCodeCanvas } from 'qrcode.react';
+
 
 export default function Dashboard() {
+    const ipAddress = '172.31.104.7';
+    const port = '5000';
+    const url = `http://${ipAddress}:${port}`; 
     const [showConfirmButton, setShowConfirmButton] = useState(false);
     const [selectedChallenge, setSelectedChallenge] = useState(null);
     const [centeredChallenge, setCenteredChallenge] = useState(null);
     const [confirmButtonClicked, setConfirmButtonClicked] = useState(false);
+    const [showQRCode, setShowQRCode] = useState(false);
+    const [selectedChallengeUrl, setSelectedChallengeUrl] = useState('');
+
+    const generateChallengeUrl = (challengeName) => {
+        // Replace this with your backend endpoint
+        const baseUrl = `${url}/challenge`;
+        return `${baseUrl}?name=${encodeURIComponent(challengeName)}`;
+    };
 
     const handleChallengeClick = (event, challenge) => {
         setSelectedChallenge(challenge);
         setShowConfirmButton(true);
     };
 
-    const handleConfirmClick = () => {
+    const handleConfirmClick = async () => {
         setCenteredChallenge(selectedChallenge);
+        const url = generateChallengeUrl(selectedChallenge[0]);
+        setSelectedChallengeUrl(url);
+        setShowQRCode(true);
         setShowConfirmButton(false);
         setConfirmButtonClicked(true);
+
+
+    const ipAddress = '172.31.104.7';
+    const port = '5000';
+    const url2 = `http://${ipAddress}:${port}/confirmchallenge`;   
+
+    const response = await fetch(`${url2}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            sessionToken: localStorage.getItem('sessionToken'), 
+            selectedChallenge 
+        }),
+    });
+
+        const data = await response.json();
+
+        console.log(data)
+
+        if (response.ok) {
+            // Store the JWT in localStorage
+            alert("User created!")
+            window.location.href = '/login'; // Redirect to login screen
+        } else {
+            alert(data.message);
+        }
+
     };
+
+    const handleCompleteClick = () => {
+        setConfirmButtonClicked(false);
+        setCenteredChallenge(null);
+    }
 
     return (
         <div className="dashboard-container">
@@ -33,7 +83,12 @@ export default function Dashboard() {
 
                     <div className="challenges-container">
                         {centeredChallenge ? (
-                            <Challenge challengeInfo={centeredChallenge} centered />
+                            <div class="challenge-qr-container">
+                                <Challenge challengeInfo={centeredChallenge} centered />
+                                <div className="qr-code-container">
+                                    <QRCodeCanvas class="qr-code" value={selectedChallengeUrl} /> {/* Updated Component */}
+                                </div>
+                            </div>
                         ) : (
                             <>
                                 <div onClick={(e) => handleChallengeClick(e, ["Daybreak Expedition", "+75 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"])}>
@@ -56,6 +111,12 @@ export default function Dashboard() {
                         >
                             Accept {selectedChallenge[0]}
                         </button>
+                    )}
+
+                    {confirmButtonClicked && showQRCode && (
+                            <button class="complete-button" onClick={handleCompleteClick}>
+                                Complete {selectedChallenge[0]}
+                            </button>                        
                     )}
                 </div>
 
