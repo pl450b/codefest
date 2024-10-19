@@ -94,8 +94,10 @@ def make_login():
 
 @app.route('/preferences', methods=['POST'])
 def record_preferences():
-    data = request.json.get()
-    print(data)
+    # data = request.json.get(
+    response = make_response(jsonify({"message": "New user added!"}))
+    return response  # Return the response to the client
+    print("Form submitted!!")
 
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
