@@ -1,18 +1,19 @@
 import './Login.css';
-import { Link }  from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
-
 export default function Login() {
-    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
     const url = `http://${ipAddress}:${port}/login`;
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
         const response = await fetch(`${url}`, {
             method: 'POST',
             headers: {
@@ -26,34 +27,43 @@ export default function Login() {
             localStorage.setItem('sessionToken', data.token);
             window.location.href = '/dashboard';
         } else {
-            alert(data.message);
+            setErrorMessage(data.message); // Update error message
         }
     };
 
-
     return (
-        <div class="login-page-container">
-            <div class="login-container">
-                <form class="login-form">
-                    <div class="form-header-group">
-                        <img class="bonvoy-img" src="./imgs/bonvoy-logo.png" alt="Mariott Bonvoy Logo" width="50%"></img>
-                        <h1 class="testing">Login</h1>
+        <div className="login-page-container">
+            <div className="login-container">
+                <form className="login-form" onSubmit={handleLogin}> {/* Add onSubmit here */}
+                    <div className="form-header-group">
+                        <img className="bonvoy-img" src="./imgs/bonvoy-logo.png" alt="Mariott Bonvoy Logo" width="50%" />
+                        <h1 className="testing">Login</h1>
                     </div>
-                    <div class="input-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" placeholder="Enter your username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                    {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+                    <div className="input-group">
+                        <label htmlFor="username">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Enter your username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
                     </div>
-                    <div class="input-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <div className="input-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </div>
-                    <button type="button" onClick={handleLogin}>Login</button>
+                    <button type="submit">Login</button> {/* Change type to "submit" */}
                     <p>Need an account? <Link to="/">Sign Up</Link></p>
                 </form>
             </div>
         </div>
-        
-  );
+    );
 }
-
-
