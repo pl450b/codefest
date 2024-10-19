@@ -33,7 +33,7 @@
     border-radius: 5px;
 }
 
-.profile-container button {
+.profile-change-container button {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
@@ -57,7 +57,7 @@
 .profile-change-container {
     flex: 1;
     display: flex;
-    justify-content: center; /* Centers the challenge cards horizontally */
+    justify-content: space-evenly; /* Centers the challenge cards horizontally */
     align-items: center; /* Centers the challenge cards vertically */
     flex-direction: column;
 }

@@ -20,15 +20,17 @@ export default function SignUp() {
             body: JSON.stringify({ username, password }),
         });
 
-        // const data = await response.json();
-        // if (response.ok) {
-        //     // Store the JWT in localStorage
-        //     localStorage.setItem('token', data.token);
-        //     alert('Login successful!');
-        //     window.location.href = '/dashboard'; // Redirect to dashboard or survey
-        // } else {
-        //     alert(data.message);
-        // }
+        const data = await response.json();
+
+        console.log(data)
+
+        if (response.ok) {
+            // Store the JWT in localStorage
+            localStorage.setItem('token', data.token);
+            window.location.href = '/dashboard'; // Redirect to dashboard or survey
+        } else {
+            alert(data.message);
+        }
     };
 
     return (

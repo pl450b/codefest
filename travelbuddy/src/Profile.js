@@ -24,21 +24,30 @@ const Profile = () => {
         }
     };
 
+    const deleteAccount = () => {
+        console.log("Your Account Has Been Deleted.")
+    }
+
     return (
         <div className="profile-container">
             <Navbar />
             <div class="profile-change-container">
-                <h1>Update Profile Picture</h1>
-                <div className="profile-picture">
-                    <img src={imageUrl} alt="Profile" />
+                <h1>Account Settings</h1>
+                <div class="">
+                    <div className="profile-picture">
+                        <img src={imageUrl} alt="Profile" />
+                    </div>
+                    <input 
+                        type="text" 
+                        placeholder="Enter image URL..." 
+                        value={newImageUrl} 
+                        onChange={handleInputChange} 
+                    />
+                    <button onClick={updateProfilePicture} class="update_btn">Update Picture</button>
                 </div>
-                <input 
-                    type="text" 
-                    placeholder="Enter image URL..." 
-                    value={newImageUrl} 
-                    onChange={handleInputChange} 
-                />
-                <button onClick={updateProfilePicture}>Update Picture</button>
+               
+
+                <button onClick={deleteAccount} class="delete_btn">Delete Account</button>
             </div>
             
         </div>
