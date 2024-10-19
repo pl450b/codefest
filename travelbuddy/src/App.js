@@ -13,16 +13,26 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 function App() {
+
+  
+  const token = localStorage.getItem('sessionToken')
+
   return (
 
     <Router>
       <Routes>
-          <Route path="/" element={<SignUp />} />
+          <Route path="/" element={token ? <Dashboard /> : <SignUp />} />
           <Route path="/login" element={<Login />} />
+<<<<<<< HEAD
           <Route path="/survey" element={<PersonalizationForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/rewards" element={<Rewards />} />
+=======
+          <Route path="/survey" element={token ? <PersonalizationForm /> : <SignUp />} />
+          <Route path="/dashboard" element={token ? <Dashboard /> : <SignUp />} />
+          <Route path="/profile" element={token ? <Profile /> : <SignUp />} />
+>>>>>>> 06d0ad379cffa1e786821cae07fcdcd43df1fb6b
       </Routes>
     </Router>
   );

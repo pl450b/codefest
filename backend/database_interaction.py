@@ -42,7 +42,7 @@ def attempt_login(username, password):
         fetched_hash = cursor.fetchone()[0]
 
         if fetched_hash:
-            print("Login successfull!")
+            print("[DATABASE] Login successfull!")
         else:
             print("Login failure")
             return False
@@ -57,6 +57,7 @@ def attempt_login(username, password):
             cursor.close()
         if connection:
             connection.close()
+        return True
 
 def add_user(username, password):
     try:
@@ -93,6 +94,41 @@ def add_user(username, password):
         if connection:
             connection.close()
 
+def remove_user(username):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Check if the user exists
+        query = sql.SQL("SELECT COUNT(*) FROM auth WHERE username = %s;")
+        cursor.execute(query, (username,))
+        count = cursor.fetchone()[0]
+
+        if count == 0:
+            print("User does not exist.")
+            return False
+        else:
+            # Remove the user from the database
+            query = sql.SQL("DELETE FROM auth WHERE username = %s;")
+            cursor.execute(query, (username,))
+            connection.commit()
+            print(f"User '{username}' removed successfully!")
+            return True
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
@@ -115,3 +151,17 @@ if __name__ == "__main__":
             test_password = input("Enter password: ")
 
             attempt_login(test_username, test_password)
+        
+        if(selection == '4'):
+            test_username = input("Enter username: ")
+            test_password = input("Enter password: ")
+
+            attempt_login(test_username, test_password)
+
+            print("Before removing:")
+            print(f"User '{test_username}'")
+
+            remove_user(test_username)
+
+            print("After removing:")
+            print(f"User '{test_username}'")
