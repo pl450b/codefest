@@ -1,0 +1,10 @@
+.login-page-container{
+    background-image: url('/public/imgs/mountainBackground.jpg');
+    width: 100vw;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

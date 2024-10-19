@@ -1,8 +1,19 @@
+.signup-page-container{
+    background-image: url('/public/imgs/mountainBackground.jpg');
+    width: 100vw;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .login-container {
     width: 100%;
     max-width: 400px;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: flex;
