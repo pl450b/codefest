@@ -31,9 +31,22 @@ const TravelForm = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault(); // Prevent page reload on form submission
     console.log("User's Selected Travel Preferences:", selectedInterests);
+
+    const ipAddress = '172.31.104.7';
+    const port = '5000';
+    const url = `http://${ipAddress}:${port}`;  
+
+    const response = fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ selectedInterests }),
+    });
+
     alert("Form submitted! Check the console for selected preferences.");
     // You can replace this with an API call or another action.
   };
