@@ -11,10 +11,8 @@ import './PersonalizationForm.css';
 import './Rewards.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
 function App() {
 
-  
   const token = localStorage.getItem('sessionToken')
 
   return (

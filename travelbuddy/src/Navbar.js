@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
     const profilePic = localStorage.getItem('profilePicture') || 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png' // Load from localStorage or use default
 
+    const SignOut = () => {
+        localStorage.removeItem('sessionToken');
+        window.location.href = "/login"
+    }
+
     return (
         <div class="navbar">
             <img src="./imgs/mariott-logo.png" alt="" class="company_logo"/>
@@ -12,7 +17,7 @@ const Navbar = () => {
                 <li><Link to="/dashboard">Dashboard</Link></li>
                 <li><Link to="/survey">Survey</Link></li>
                 <li><Link to="/profile">Profile</Link></li>
-                <li><Link to="/">Sign Out</Link></li>
+                <li><Link to="/" onClick={SignOut}>Sign Out</Link></li>
 
             </ul>
             <img src={profilePic} alt="" class="profile_pic"/>

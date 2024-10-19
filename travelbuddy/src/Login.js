@@ -24,7 +24,6 @@ export default function Login() {
         const data = await response.json();
         if (response.ok) {
             localStorage.setItem('sessionToken', data.token);
-            alert('Login successful!');
             window.location.href = '/dashboard'; // Redirect to dashboard or survey
         } else {
             alert(data.message);
