@@ -20,6 +20,7 @@ def hash_pass(input_string):
     return hex_digest
 
 def attempt_login(username, password):
+    return_val = False
     try:
         # Connect to the PostgreSQL server
         connection = psycopg2.connect(
@@ -43,13 +44,14 @@ def attempt_login(username, password):
 
         if fetched_hash:
             print("[DATABASE] Login successfull!")
+            return_val = True
         else:
             print("Login failure")
-            return False
+            return_val = False
 
     except Exception as error:
         print(f"Error while connecting to PostgreSQL: {error}")
-        return False
+        return_val = False
 
     finally:
         # Close the cursor and connection
@@ -57,7 +59,7 @@ def attempt_login(username, password):
             cursor.close()
         if connection:
             connection.close()
-        return True
+        return return_val
 
 def add_user(username, password):
     try:
@@ -72,7 +74,6 @@ def add_user(username, password):
         cursor = connection.cursor()
 
         query = sql.SQL("SELECT COUNT(*) FROM auth WHERE username = %s;")
-
         cursor.execute(query, (username,))
         count = cursor.fetchone()[0]
 

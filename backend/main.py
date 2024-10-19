@@ -23,6 +23,7 @@ def generate_jwt(user_id):
     }
     # Encode the payload to generate a JWT using the secret key and HS256 algorithm
     token = jwt.encode(payload, JWT_SECRET, algorithm='HS256')
+
     return token
 
 # Function to verify and decode a JWT
@@ -46,7 +47,7 @@ def login():
     print(f"Got {username} and {password}")    
     # Example validation (replace with actual logic to check user credentials)
     if attempt_login(username, password):
-        print(f"Login from {username}")
+        print(f"[FLASK] Login from {username}")
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
