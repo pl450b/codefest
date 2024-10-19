@@ -1,0 +1,44 @@
+.navbar {
+    width: 100%;
+    margin: 0;
+    padding: 20px 20px; /* Add padding to create space on the left and right */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Ensures padding does not cause overflow */
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    justify-content: center; /* Center the list items */
+    align-items: center; /* Ensure they are aligned vertically */
+    padding: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.navbar ul li {
+    margin: 0 20px; /* Adjust as needed */
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: black;
+}
+
+.navbar img {
+    margin: 0 10px; /* Add margin to prevent images from sticking to the content */
+}
+
+.company_logo{
+    width: 80px;
+    height: 50px;
+}
+
+.profile_pic{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;  
+    border-radius: 50px;
+}

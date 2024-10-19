@@ -4,14 +4,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background-color: #f5f5f5;
-    height: 100vh;
     width: 100vw;
-    width: 100vw; /* Ensure full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
-    display: flex;
-    flex-direction: column;
+    padding: 0;
+    height: calc(100vh);    
+    overflow: hidden;
 }
 
 .profile-picture {
