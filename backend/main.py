@@ -101,6 +101,11 @@ def record_preferences():
     return response  # Return the response to the client
     print("Form submitted!!")
 
+@app.route('/confirmchallenge', methods=['POST'])
+def confirmchallenge():
+    data = request.get_json()
+    print(data)
+    
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
     print("user wants a ai suggestion")
