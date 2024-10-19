@@ -26,7 +26,7 @@ export default function SignUp() {
 
         if (response.ok) {
             // Store the JWT in localStorage
-            alert("User create!")
+            alert("User created!")
             window.location.href = '/login'; // Redirect to login screen
         } else {
             alert(data.message);
