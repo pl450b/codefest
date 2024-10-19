@@ -33,11 +33,45 @@
     align-items: center;
 }
 
+.challenge-with-confirm-button{
+
+    display: flex;
+    flex-direction: column;
+    
+}
+
 .challenges-container {
-    width: 100%;
+    width: 100vw;
     flex: 1;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Centers the challenge cards horizontally */
+    justify-content: space-evenly; /* Centers the challenge cards horizontally */
     align-items: center; /* Centers the challenge cards vertically */
+}
+
+.confirm-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-button:hover {
+    background-color: #45a049;
+}
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
