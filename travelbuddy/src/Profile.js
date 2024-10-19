@@ -28,29 +28,46 @@ const Profile = () => {
         console.log("Your Account Has Been Deleted.")
     }
 
-    return (
-        <div className="profile-container">
-            <Navbar />
-            <div class="profile-change-container">
-                <h1>Account Settings</h1>
-                <div class="update_photo">
-                    <div className="profile-picture">
-                        <img src={imageUrl} alt="Profile" />
-                    </div>
-                    <input 
-                        type="text" 
-                        placeholder="Enter image URL..." 
-                        value={newImageUrl} 
-                        onChange={handleInputChange} 
-                    />
-                    <button onClick={updateProfilePicture} class="update_btn">Update Picture</button>
-                </div>
-               
+    const userStats = {
+    totalPoints: 1250,
+    completedChallenges: 15,
+    currentStreak: 7,
+    ranking: 42
+  };
 
-                <button onClick={deleteAccount} class="delete_btn">Delete Account</button>
+  // Sample recent challenges data
+  const recentChallenges = [
+    { id: 1, name: "30 Days of Code", points: 500, completed: "2024-03-15" },
+    { id: 2, name: "Bug Hunter", points: 300, completed: "2024-03-10" },
+    { id: 3, name: "Team Challenge", points: 450, completed: "2024-03-05" }
+  ];
+
+    return (
+            <div className="profile-container">
+                
+                <Navbar />
+
+                <div class="account-info">
+                    <div class="profile-change-container">
+                        <h1>Account Settings</h1>
+                        <div class="update_photo">
+                            <div className="profile-picture">
+                                <img src={imageUrl} alt="Profile" />
+                            </div>
+                            <input 
+                                type="text" 
+                                placeholder="Enter image URL..." 
+                                value={newImageUrl} 
+                                onChange={handleInputChange} 
+                            />
+                            <button onClick={updateProfilePicture} class="update_btn">Update Picture</button>
+                        </div>
+                        <button onClick={deleteAccount} class="delete_btn">Delete Account</button>
+                    </div>
+
+                    <div class="vertical-line"></div>
+                </div>
             </div>
-            
-        </div>
     );
 };
 

@@ -2,8 +2,6 @@
 .profile-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100vw;
     padding: 0;
     height: calc(100vh);    
@@ -42,17 +40,8 @@
     transition: background-color 0.3s ease;
 }
 
-.profile-navbar {
-    display: flex;
-    justify-content: flex-start; /* Align the hamburger to the left */
-    width: 100%;
-    padding: 10px 0 0 45px;
-}
-
 .profile-change-container {
-    flex: 1;
     display: flex;
-    justify-content: space-evenly; /* Centers the challenge cards horizontally */
     align-items: center; /* Centers the challenge cards vertically */
     flex-direction: column;
 }
@@ -78,4 +67,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.account-info{
+
+    display: flex;
+    flex-direction: row;
+    margin: 20px, 0px;
+    align-content: space-between;
+    width: 100vw;
+
+}
+
+.vertical-line{
+    width: 2px;
+    height: 100px;
+    background-color: black;
 }
