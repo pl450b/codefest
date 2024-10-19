@@ -1,30 +1,74 @@
-from flask import Flask, request, jsonify
+import jwt
+import os
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-# Route to handle GET request
+# Use environment variables for secrets
+JWT_SECRET = os.getenv('JWT_SECRET')
+
+# Function to generate a JWT for a given user ID
+def generate_jwt(user_id):
+    # Define the payload for the JWT, including the user ID and expiration time (2 days)
+    payload = {
+        'user_id': user_id,
+        'exp': datetime.utcnow() + timedelta(days=2)  # Token expires in 2 days
+    }
+    # Encode the payload to generate a JWT using the secret key and HS256 algorithm
+    token = jwt.encode(payload, JWT_SECRET, algorithm='HS256')
+    return token
+
+# Function to verify and decode a JWT
+def verify_jwt(token):
+    try:
+        # Decode the token using the secret key and validate it with the HS256 algorithm
+        decoded = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+        return decoded  # Return the decoded payload if verification is successful
+    except jwt.ExpiredSignatureError:
+        return None  # Return None if the token has expired
+    except jwt.InvalidTokenError:
+        return None  # Return None if the token is invalid
+
+# Route to handle user login
+@app.route('/login', methods=['POST'])
+def login():
+    # Extract username and password from the JSON body of the POST request
+    username = request.json.get('username')
+    password = request.json.get('password')
+    
+    # Example validation (replace with actual logic to check user credentials)
+    if username == 'user' and password == 'password':
+        user_id = 1  # Replace with actual user ID
+        # Generate a JWT for the authenticated user
+        token = generate_jwt(user_id)
+        
+        # Create a response to send back to the client
+        response = make_response(jsonify({"message": "Login successful!"}))
+        # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
+        response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
+        
+        return response  # Return the response to the client
+    else:
+        # Return a 401 Unauthorized response if the credentials are invalid
+        return jsonify({"message": "Invalid credentials"}), 401
+
+# Route to verify the JWT from the user's cookie and return a message
 @app.route('/', methods=['GET'])
 def index():
-    return jsonify({"message": "Hello from Python backend!"})
+    # Retrieve the 'user_token' from cookies
+    user_token = request.cookies.get('user_token')
+    # Check if the token exists and is valid
+    if user_token and verify_jwt(user_token):
+        return jsonify({"message": "Welcome back! You are still logged in."})  # Valid token, user is logged in
+    return jsonify({"message": "Hello from Python backend!"})  # No valid token, greet the user
 
-# Route to handle POST request (e.g., receiving data from Node.js server)
-@app.route('/', methods=['POST'])
-def receive_data():
-    # Get JSON data from the request
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-
-    if(username == "Wes"):
-        print("Wes in the house!!")
-    # Log or process the data
-    print("Data received from Node.js:", data)
-
-    # Respond with a confirmation message
-    return jsonify({"message": "Data received", "data": data}), 200
-
+# Start the Flask application
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)  # Exposing the API on port 5000
-
+    app.run(host='0.0.0.0', port=5000)
