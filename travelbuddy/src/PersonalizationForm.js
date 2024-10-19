@@ -37,15 +37,21 @@ const TravelForm = () => {
 
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`;  
-
-    const response = fetch(`${url}`, {
+    const url = `http://${ipAddress}:${port}/preferences`;  
+    alert("data sent")
+    const response = await fetch(`${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ selectedInterests }),
     });
+
+    if(response.ok) {
+      alert("Data sent sucessfully!")
+    } else {
+      alert("Data transfer failed")
+    }
 
     window.location.href = "/dashboard"
     // You can replace this with an API call or another action.

@@ -1,5 +1,9 @@
 /* Profile.css */
 .profile-container {
+    background-image: url('/public/imgs/beach.jpeg');
+    background-attachment: fixed; 
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     flex-direction: column;
     width: 100vw;
