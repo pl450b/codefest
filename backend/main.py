@@ -5,6 +5,7 @@ from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from database_interaction import attempt_login, add_user
+from ai.py import *
 # Load environment variables from .env file
 load_dotenv()
 
@@ -73,29 +74,27 @@ def index():
     if user_token and verify_jwt(user_token):
         return jsonify({"message": "Welcome back! You are still logged in."})  # Valid token, user is logged in
     return jsonify({"message": "Hello from Python backend!"})  # No valid token, greet the user
+
 @app.route('/', methods=['POST'])
-def god_help_us():
+def make_login():
+    print("emre is tierd")
     # Extract username and password from the JSON body of the POST request
     username = request.json.get('username')
     password = request.json.get('password')
     print(f"Got {username} and {password}")    
     # Example validation (replace with actual logic to check user credentials)
     if add_user(username, password):
-        print(f"Login from {username}")
-        user_id = 1  # Replace with actual user ID
-        # Generate a JWT for the authenticated user
-        token = generate_jwt(user_id)
-        
         # Create a response to send back to the client
-        response = make_response(jsonify({"message": "Login successful!"}))
-        # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
-        response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
-        
+        response = make_response(jsonify({"message": "New user added!"}))
         return response  # Return the response to the client
     else:
-        print(f"failed login from {username}")
+        print(f"failed to add user {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
-        return jsonify({"message": "Invalid credentials"}), 401
+        return jsonify({"message": "Failed to create user"}), 401
+
+@app.route('/suggestion', methods=['GET'])
+def ai_suggestion():
+    print("user wants a ai suggestion")
 # Start the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
