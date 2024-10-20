@@ -3,8 +3,8 @@ import './Challenge.css';
 
 const ChallengeCard = ({ challengeInfo, className }) => {
   const challengeName = challengeInfo[0];
-  const challengeReward = challengeInfo[1];
-  const challengeDescription = challengeInfo[2];
+  const challengeReward = challengeInfo[2];
+  const challengeDescription = challengeInfo[1];
 
   return (
     <div className={`challenge-card ${className}`}>
