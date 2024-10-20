@@ -53,17 +53,20 @@ def login():
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
-        add_token(username, token)        
-        # Create a response to send back to the client
-        response = make_response(jsonify({"user_token": token}))
-        # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
-        #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
+        add_token(username, token)
+
+        # Create a response for redirect
+        response = redirect("/personalize")
         
-        return redirect("/personalize")  # Return the response to the client
+        # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
+        response.set_cookie('user_token', token, max_age=2*24*60*60, httponly=True, secure=True)
+        
+        return response
     else:
         print(f"failed login from {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
         return jsonify({"message": "Invalid credentials"}), 401
+
 
 # Route to verify the JWT from the user's cookie and return a message
 @app.route('/', methods=['GET'])
