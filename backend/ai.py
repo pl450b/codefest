@@ -3,6 +3,7 @@ import psycopg2
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import json
 
 # Database connection details
 DB_HOST = os.environ.get('DB_HOST', 'localhost')
@@ -65,24 +66,29 @@ def get_user_profile(username):
         )
         cur = conn.cursor()
         cur.execute("""
-            SELECT travel_frequency, destination_preference, traveler_type, 
-                   time_preference, documentation_style
+            SELECT preferences
             FROM user_survey
-            WHERE user_id = %s
+            WHERE username = %s
         """, (username,))
         user_profile = cur.fetchone()
+
+        preferences = user_profile[0]
+        data_dict = json.loads(preferences)
+
         cur.close()
         conn.close()
-        return user_profile
+        return data_dict
     except psycopg2.Error as e:
         print(f"Database connection error: {e}")
         return None
 
 def create_profile_embedding(profile):
-    profile_text = f"{profile[0]} traveler, {profile[1]} preference, {profile[2]} type, {profile[3]} time, {profile[4]} documentation"
+    profile_text = f"{profile["travelFrequency"]} traveler, {profile["travelDestinations"]} preference, {profile["travelPersonality"]} type, {profile["travelHabits"]} time, {profile["documentingTravel"]} documentation"
     return model.encode([profile_text])[0]
 
 def create_quest_embeddings():
+
+    print(get_quests_from_db())
     return model.encode(get_quests_from_db())
 
 def find_matching_quest(user_profile):
@@ -93,8 +99,9 @@ def find_matching_quest(user_profile):
     similarities = cosine_similarity([profile_embedding], quest_embeddings)[0]
     
     # Get the best matching quest
-    best_match_idx = np.argmax(similarities)
-    return get_quests_from_db()[best_match_idx]
+    top_3_indices = np.argsort(similarities)[-3:][::-1]  # Sort, then get the last 3 indices in descending order
+
+    return top_3_indices
 
 def main():
     username = input("Enter the username: ")
@@ -102,11 +109,11 @@ def main():
     
     if user_profile:
         print("\nUser Travel Profile:")
-        print(f"Travel Frequency: {user_profile[0]}")
-        print(f"Destination Preference: {user_profile[1]}")
-        print(f"Traveler Type: {user_profile[2]}")
-        print(f"Time Preference: {user_profile[3]}")
-        print(f"Documentation Style: {user_profile[4]}")
+        print(f"Travel Frequency: {user_profile["travelFrequency"]}")
+        print(f"Destination Preference: {user_profile["travelDestinations"]}")
+        print(f"Traveler Type: {user_profile["travelPersonality"]}")
+        print(f"Time Preference: {user_profile["travelHabits"]}")
+        print(f"Documentation Style: {user_profile["documentingTravel"]}")
         
         suggested_quest = find_matching_quest(user_profile)
         print(f"\nSuggested Quest: {suggested_quest}")
