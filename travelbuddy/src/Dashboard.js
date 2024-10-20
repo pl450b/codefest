@@ -18,6 +18,7 @@ export default function Dashboard() {
     const [completedChallenges, setCompletedChallenges] = useState([]); // Track completed challenges
     const [location, setLocation] = useState({ latitude: null, longitude: null }); // Store user location
     const [city, setCity] = useState(""); // Store city name
+    const [challengesList, setChallengesList] = useState(null);
 
     useEffect(() => {
         // Fetch active challenge from the backend
