@@ -350,7 +350,7 @@ def user_exists_in_survey(username):
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
-        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n4) Remove User")
+        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n4) Remove User\n5) Check User Challenge\n")
         
         selection = input()
 
@@ -383,3 +383,9 @@ if __name__ == "__main__":
 
             print("After removing:")
             print(f"User '{test_username}'")
+        if(selection == '5'):
+            test_username = input("Enter username: ")
+
+            result = check_selected_challenge(test_username)
+
+            print(result)
