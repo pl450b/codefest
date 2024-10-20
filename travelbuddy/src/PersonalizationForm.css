@@ -29,6 +29,7 @@
 }
 
 h2 {
+    font-family: 'Georgia', serif;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -38,6 +39,7 @@ h2 {
     margin-bottom: 20px;
 }
 .category h3 {
+    font-family: 'Georgia', serif;
     display: flex;
     align-items: center;
 }
@@ -48,7 +50,7 @@ h2 {
 }
 .interest {
     padding: 10px 15px;
-    background-color: #ececec;
+    background-color: rgba(247, 209, 163, .8);
     border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s;

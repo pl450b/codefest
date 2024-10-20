@@ -15,7 +15,7 @@ function App() {
       <Routes>
           <Route path="/" element={token ? <Dashboard /> : <SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/survey" element={token ? <PersonalizationForm /> : <SignUp />} />
+          <Route path="/personalize" element={token ? <PersonalizationForm /> : <SignUp />} />
           <Route path="/dashboard" element={token ? <Dashboard /> : <SignUp />} />
           <Route path="/profile" element={token ? <Profile /> : <SignUp />} />
       </Routes>
