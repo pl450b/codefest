@@ -233,7 +233,7 @@ def update_selected_challenge(username, selected_challenge):
             connection.close()
 
 
-def update_user_preferences(username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style):
+def update_user_preferences(username, preferences):
     try:
         # Connect to the PostgreSQL server
         connection = psycopg2.connect(
@@ -253,21 +253,17 @@ def update_user_preferences(username, travel_frequency, destination_preference, 
             # User exists: Update their preferences
             query = """
             UPDATE user_survey SET
-                travel_frequency = %s,
-                destination_preference = %s,
-                traveler_type = %s,
-                time_preference = %s,
-                documentation_style = %s
+                preferences = %s
             WHERE username = %s;
             """
-            cursor.execute(query, (travel_frequency, destination_preference, traveler_type, time_preference, documentation_style, username))
+            cursor.execute(query, (preferences, username))
         else:
             # User does not exist: Insert new user
             query = """
-            INSERT INTO user_survey (username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style)
-            VALUES (%s, %s, %s, %s, %s, %s);
+            INSERT INTO user_survey (username, preferences)
+            VALUES (%s, %s);
             """
-            cursor.execute(query, (username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style))
+            cursor.execute(query, (username, preferences))
 
         # Commit the transaction
         connection.commit()
@@ -285,6 +281,7 @@ def update_user_preferences(username, travel_frequency, destination_preference, 
             cursor.close()
         if connection:
             connection.close()
+
 
 
 

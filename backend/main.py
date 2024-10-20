@@ -101,25 +101,25 @@ def record_preferences():
     if not username:
         return jsonify({"message": "Invalid session token"}), 401
 
-    # Extract the user preferences from the JSON
-    travel_frequency = data.get('travelFrequency')  # Corresponds to `travel_frequency` column
-    travel_destinations = data.get('travelDestinations')  # Corresponds to `destination_preference` column
-    travel_personality = data.get('travelPersonality')  # Corresponds to `traveler_type` column
-    travel_habits = data.get('travelHabits')  # Corresponds to `time_preference` column
-    documenting_travel = data.get('documentingTravel')  # Corresponds to `documentation_style` column
+    # Combine preferences into a single JSON string
+    preferences = {
+        "travel_frequency": data.get('travelFrequency'),
+        "destination_preference": data.get('travelDestinations'),
+        "traveler_type": data.get('travelPersonality'),
+        "time_preference": data.get('travelHabits'),
+        "documentation_style": data.get('documentingTravel')
+    }
 
-    # Convert lists to comma-separated strings if they are lists
-    destination_preference_str = ", ".join(travel_destinations) if travel_destinations else ""
-    time_preference_str = ", ".join(travel_habits) if travel_habits else ""
+    # Convert the preferences dictionary to a JSON string
+    preferences_str = json.dumps(preferences)
 
-    print(f"[FLASK] {username} preferences: Frequency: {travel_frequency}, Destinations: {destination_preference_str}, Personality: {travel_personality}, Time: {time_preference_str}, Documenting: {documenting_travel}")
+    print(f"[FLASK] {username} preferences: {preferences_str}")
 
     # Save preferences to the database
-    if update_user_preferences(username, travel_frequency, destination_preference_str, travel_personality, time_preference_str, documenting_travel):
+    if update_user_preferences(username, preferences_str):
         return jsonify({"message": "Preferences recorded successfully!"}), 200
     else:
         return jsonify({"message": "Failed to record preferences"}), 500
-
 
 
 @app.route('/confirmchallenge', methods=['POST'])
