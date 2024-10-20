@@ -44,7 +44,7 @@ def get_user_profile(username):
         cur.execute("""
             SELECT travel_frequency, destination_preference, traveler_type, 
                    time_preference, documentation_style
-            FROM user_travel_profiles
+            FROM user_survey
             WHERE user_id = %s
         """, (username,))
         user_profile = cur.fetchone()

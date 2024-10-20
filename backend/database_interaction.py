@@ -246,7 +246,7 @@ def update_user_preferences(username, travel_frequency, travel_destinations, tra
         cursor = connection.cursor()
 
         # Check if the user already exists
-        cursor.execute("SELECT COUNT(*) FROM user_travel_profiles WHERE username = %s;", (username,))
+        cursor.execute("SELECT COUNT(*) FROM user_survey WHERE username = %s;", (username,))
         user_exists = cursor.fetchone()[0] > 0
 
         if user_exists:
