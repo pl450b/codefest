@@ -47,9 +47,9 @@ const TravelForm = () => {
     });
 
     if(response.ok) {
-      alert("Data sent sucessfully!")
+      console.log("Data sent sucessfully!")
     } else {
-      alert("Data transfer failed")
+      console.log("Data transfer failed")
     }
 
     window.location.href = "/dashboard"

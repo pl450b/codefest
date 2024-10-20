@@ -29,7 +29,7 @@ export default function Login() {
             console.log(data);
 
             // Redirect based on the new_user value
-            alert(data.new_user)
+            console.log(data.new_user)
             if (data.new_user) {
                 window.location.href = '/personalize';
             } else {
