@@ -14,23 +14,46 @@ DB_PASS = os.environ.get('DB_PASS', 'Party@H0tel')
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 # Your predefined quests
-AVAILABLE_QUESTS = [
-    "Walk Among the Legends - Join a free walking tour guided by a local expert to discover hidden stories of the city.",
-    "Feast of the Senses - Embark on a local food or drink tour, savoring authentic flavors with fellow adventurers.",
-    "The Traveler's Hearth - Participate in a hostel or community event (pub crawl, game night, etc.) to meet other travelers.",
-    "Daybreak Expedition - Book a small group day trip through the hotel to explore a nearby destination.",
-    "Tavern Ties - Join a local pub crawl or happy hour to connect with townsfolk and fellow adventurers.",
-    "The Digital Call to Arms - Respond to a traveler's meetup event via social media. Join a group adventure or spontaneous gathering.",
-    "Art of the Moment - Participate in a local craft or cooking class and create something uniquely yours.",
-    "Song of the Streets - Attend a free street performance or outdoor concert to soak in the city's culture.",
-    "The Fittest Shall Thrive - Join a drop-in fitness class (yoga, boot camp, cycling) to boost your health and meet other fitness enthusiasts.",
-    "The Tongue's Tapestry - Attend a language exchange cafe to practice the local language with others.",
-    "Feast Among Strangers - Visit a local street food market and dine at communal tables to bond with fellow travelers.",
-    "The Traveler's Feast - Join a traveler-exclusive dinner organized by the hotel or a local hostel.",
-    "Capture the Horizon - Participate in a photography or Instagram tour to capture the city's best views.",
-    "Flame and Flavor - Attend a short cooking class and master a local dish.",
-    "Swift Sights - Join a quick sightseeing tour (bike, segway, or boat) to cover more ground in less time."
-]
+# AVAILABLE_QUESTS = [
+#     "Walk Among the Legends - Join a free walking tour guided by a local expert to discover hidden stories of the city.",
+#     "Feast of the Senses - Embark on a local food or drink tour, savoring authentic flavors with fellow adventurers.",
+#     "The Traveler's Hearth - Participate in a hostel or community event (pub crawl, game night, etc.) to meet other travelers.",
+#     "Daybreak Expedition - Book a small group day trip through the hotel to explore a nearby destination.",
+#     "Tavern Ties - Join a local pub crawl or happy hour to connect with townsfolk and fellow adventurers.",
+#     "The Digital Call to Arms - Respond to a traveler's meetup event via social media. Join a group adventure or spontaneous gathering.",
+#     "Art of the Moment - Participate in a local craft or cooking class and create something uniquely yours.",
+#     "Song of the Streets - Attend a free street performance or outdoor concert to soak in the city's culture.",
+#     "The Fittest Shall Thrive - Join a drop-in fitness class (yoga, boot camp, cycling) to boost your health and meet other fitness enthusiasts.",
+#     "The Tongue's Tapestry - Attend a language exchange cafe to practice the local language with others.",
+#     "Feast Among Strangers - Visit a local street food market and dine at communal tables to bond with fellow travelers.",
+#     "The Traveler's Feast - Join a traveler-exclusive dinner organized by the hotel or a local hostel.",
+#     "Capture the Horizon - Participate in a photography or Instagram tour to capture the city's best views.",
+#     "Flame and Flavor - Attend a short cooking class and master a local dish.",
+#     "Swift Sights - Join a quick sightseeing tour (bike, segway, or boat) to cover more ground in less time."
+# ]
+
+
+def get_quests_from_db():
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            host=DB_HOST
+        )
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT challenge
+            FROM challenges
+        """)
+        challenges = cur.fetchall()
+        cur.close()
+        conn.close()
+        return challenges
+    except psycopg2.Error as e:
+        print(f"Database connection error: {e}")
+        return None
+
 
 def get_user_profile(username):
     try:
@@ -60,7 +83,7 @@ def create_profile_embedding(profile):
     return model.encode([profile_text])[0]
 
 def create_quest_embeddings():
-    return model.encode(AVAILABLE_QUESTS)
+    return model.encode(get_quests_from_db())
 
 def find_matching_quest(user_profile):
     profile_embedding = create_profile_embedding(user_profile)
@@ -71,7 +94,7 @@ def find_matching_quest(user_profile):
     
     # Get the best matching quest
     best_match_idx = np.argmax(similarities)
-    return AVAILABLE_QUESTS[best_match_idx]
+    return get_quests_from_db()[best_match_idx]
 
 def main():
     username = input("Enter the username: ")
