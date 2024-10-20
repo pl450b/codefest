@@ -123,14 +123,12 @@ export default function Dashboard() {
         setConfirmButtonClicked(false);
         setCenteredChallenge(null);
         setCompletedChallenges((prev) => [...prev, selectedChallenge[0]]);
-
-        const ipAddress = '172.31.104.7';
-        const port = '5000';
         
-        await fetch(`'http://${url}/completechallenge'`, {
+        await fetch(`${url}/completechallenge`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'sessionToken': localStorage.getItem('sessionToken'),
             },
             body: JSON.stringify({
                 sessionToken: localStorage.getItem('sessionToken'),
@@ -206,36 +204,34 @@ export default function Dashboard() {
                 <div class="challenge-with-confirm-button">
 
                 <div className="challenges-container">
-                    {centeredChallenge ? (
-                        <div class="challenge-qr-container">
-                            <Challenge challengeInfo={selectedChallenge} centered />
-                        <div className="qr-code-container">
-                        <QRCodeCanvas class="qr-code" value={selectedChallengeUrl} />
-                </div>
+    {centeredChallenge ? (
+        <div class="challenge-qr-container">
+            <Challenge challengeInfo={selectedChallenge} centered />
+            <div className="qr-code-container">
+                <QRCodeCanvas class="qr-code" value={selectedChallengeUrl} />
             </div>
-            ) : (
-            // Only render challenges if challengesList is not null and has elements
-            challengesList && challengesList.length > 0 && (
-                    <>
-                        {challengesList[0] && (
-                            <div onClick={(e) => handleChallengeClick(e, challengesList[0])}>
-                                <Challenge challengeInfo={challengesList[0]} />
-                            </div>
-                        )}
-                        {challengesList[1] && (
-                            <div onClick={(e) => handleChallengeClick(e, challengesList[1])}>
-                                <Challenge challengeInfo={challengesList[1]} />
-                            </div>
-                        )}
-                        {challengesList[2] && (
-                            <div onClick={(e) => handleChallengeClick(e, challengesList[2])}>
-                                <Challenge challengeInfo={challengesList[2]} />
-                            </div>
-                        )}
-                    </>
-                )
-            )}
-            </div>
+        </div>
+    ) : (
+        // Only render challenges if challengesList is not null and has elements
+        challengesList && challengesList.length > 0 && (
+            <>
+                {challengesList.map((challenge, index) => {
+                    const isCompleted = completedChallenges.includes(challenge[0]); // Adjust if `challenge[0]` is the unique identifier
+                    return (
+                        <div 
+                            key={index}
+                            onClick={!isCompleted ? (e) => handleChallengeClick(e, challenge) : null}
+                            className={`challenge-item ${isCompleted ? 'completed' : ''}`}
+                        >
+                            <Challenge challengeInfo={challenge} />
+                        </div>
+                    );
+                })}
+            </>
+        )
+    )}
+</div>
+
                     {/* Show the confirm button if a challenge is selected */}
                     {showConfirmButton && (
                         <button
