@@ -6,7 +6,7 @@ from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences
-# from ai import *
+from ai import *
 # Load environment variables from .env file
 load_dotenv()
 
@@ -54,8 +54,12 @@ def login():
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
         add_token(username, token)        
-        # Redirect the user to the /personalize route
-        return redirect('http://172.31.104.7:3000/personalize')
+        # Create a response to send back to the client
+        response = make_response(jsonify({"user_token": token}))
+        # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
+        #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
+        
+        return response  # Return the response to the client
     else:
         print(f"failed login from {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
