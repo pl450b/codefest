@@ -42,33 +42,64 @@ const Profile = () => {
     { id: 3, name: "Team Challenge", points: 450, completed: "2024-03-05" }
   ];
 
-    return (
-            <div className="profile-container">
-                
-                <Navbar />
+  return (
+    <div className="profile-container">
+        <Navbar />
 
-                <div class="account-info">
-                    <div class="profile-change-container">
-                        <h1>Account Settings</h1>
-                        <div class="update_photo">
-                            <div className="profile-picture">
-                                <img src={imageUrl} alt="Profile" />
-                            </div>
-                            <input 
-                                type="text" 
-                                placeholder="Enter image URL..." 
-                                value={newImageUrl} 
-                                onChange={handleInputChange} 
-                            />
-                            <button onClick={updateProfilePicture} class="update_btn">Update Picture</button>
-                        </div>
-                        <button onClick={deleteAccount} class="delete_btn">Delete Account</button>
+        <div className="account-info">
+            <div className="profile-change-container">
+                <h1>Account Settings</h1>
+                <div className="update_photo">
+                    <div className="profile-picture">
+                        <img src={imageUrl} alt="Profile" />
                     </div>
+                    <input 
+                        type="text" 
+                        placeholder="Enter image URL..." 
+                        value={newImageUrl} 
+                        onChange={handleInputChange} 
+                    />
+                    <button onClick={updateProfilePicture} className="update_btn">Update Picture</button>
+                </div>
+                <button onClick={deleteAccount} className="delete_btn">Delete Account</button>
+            </div>
 
-                    <div class="vertical-line"></div>
+            <div className="account-stats">
+                <h1>Account Stats</h1>
+                <div className="stats-container">
+                    <div className="stat-container">
+                        <h3 className="stat-title">Total Points:</h3>
+                        <p className="stat-value">{userStats.totalPoints}</p>
+                    </div>
+                    <div className="stat-container">
+                        <h3 className="stat-title">Completed Challenges:</h3>
+                        <p className="stat-value">{userStats.completedChallenges}</p>
+                    </div>
+                    <div className="stat-container">
+                        <h3 className="stat-title">Current Streak:</h3>
+                        <p className="stat-value">{userStats.currentStreak}</p>
+                    </div>
+                    <div className="stat-container">
+                        <h3 className="stat-title">Ranking:</h3>
+                        <p className="stat-value">{userStats.ranking}</p>
+                    </div>
+                </div>
+
+                <h1>Recent Challenges</h1>
+                <div className="recent-challenges">
+                    {recentChallenges.map(challenge => (
+                        <div className="challenge-container" key={challenge.id}>
+                            <h4>{challenge.name}</h4>
+                            <p>{challenge.points} points</p>
+                            <p>Completed on: {challenge.completed}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
-    );
+        </div>
+    </div>
+);
+
 };
 
 export default Profile;

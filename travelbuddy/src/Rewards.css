@@ -1,4 +1,4 @@
-/* RewardsPage.css */
+/* RewardsPage.css
   
   .rewards-page {
     display: flex;
@@ -7,7 +7,7 @@
     align-items: stretch;
     min-height: 100vh;
     background-color: #f4f4f4;
-    padding: 20px; /* Reduced padding */
+    padding: 20px; /* Reduced padding 
     box-sizing: border-box;
     width: 100vw;
   }
@@ -86,14 +86,14 @@
     margin-top: 5px;
   }
   
-  /* Minimal padding on very large screens */
+  /* Minimal padding on very large screens 
   @media screen and (min-width: 1400px) {
     .rewards-page {
       padding: 20px 10px;
     }
   }
   
-  /* Added better spacing for smaller screens */
+  /* Added better spacing for smaller screens 
   @media screen and (max-width: 768px) {
     .rewards-page {
       padding: 10px;
@@ -103,4 +103,4 @@
       margin-left: 5px;
       margin-right: 5px;
     }
-  }
+  } */

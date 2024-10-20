@@ -21,6 +21,7 @@
 .navbar ul li {
     margin: 0 20px; /* Adjust as needed */
     background-color: rgba(247, 209, 163, .4);
+    border: 1px solid #ccc; /* Border for separation */
     border-radius: 7px;
     padding: 10px 20px;
 }
