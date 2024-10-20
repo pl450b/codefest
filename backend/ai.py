@@ -115,19 +115,22 @@ def add_quests_to_db():
             host=DB_HOST
         )
         cur = conn.cursor()
-        insert_query = "INSERT INTO challenges VALUES (?)"
-
-        # Loop through the challenges array and insert each one
+        
+        # Corrected SQL query
         for challenge in AVAILABLE_QUESTS:
-            cursor.execute(insert_query, (challenge,)) 
+            cur.execute("INSERT INTO challenges (title, description, reward) VALUES (%s, %s, %s)", (challenge[0],challenge[1], challenge[2]))
 
-            # Commit the transaction
-            conn.commit()
+        # Commit the transaction
+        conn.commit()
 
-        # Close the connection
+        # Close the cursor and connection
+        cur.close()
         conn.close()
-    except:
-        print()
+
+        print("Challenge added successfully!")
+
+    except psycopg2.Error as e:
+        print(f"Database connection error: {e}")
 
 
 def get_quests_from_db():
@@ -140,10 +143,12 @@ def get_quests_from_db():
         )
         cur = conn.cursor()
         cur.execute("""
-            SELECT challenge
+            SELECT title, description, reward
             FROM challenges
         """)
-        challenges = cur.fetchall()
+        rows = cur.fetchall()
+
+        challenges = [list(row) for row in rows]
         cur.close()
         conn.close()
         return challenges
@@ -183,24 +188,22 @@ def create_profile_embedding(profile):
     return model.encode([profile_text])[0]
 
 def create_quest_embeddings():
-
-    print(get_quests_from_db())
     return model.encode(get_quests_from_db())
 
 def find_matching_quest(user_profile):
     profile_embedding = create_profile_embedding(user_profile)
     quest_embeddings = create_quest_embeddings()
-    
+    quests = get_quests_from_db()
+
     # Calculate similarities
     similarities = cosine_similarity([profile_embedding], quest_embeddings)[0]
     
     # Get the best matching quest
     top_3_indices = np.argsort(similarities)[-3:][::-1]  # Sort, then get the last 3 indices in descending order
 
-    return top_3_indices
+    return [quests[top_3_indices[0]], quests[top_3_indices[1]], quests[top_3_indices[2]]]
 
 def main():
-    add_quests_to_db()
     username = input("Enter the username: ")
     user_profile = get_user_profile(username)
     
