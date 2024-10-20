@@ -27,6 +27,7 @@ export default function Login() {
             localStorage.setItem('sessionToken', data.user_token);
 
             // Redirect based on the new_user value
+            console.log(data.new_user)
             if (data.new_user) {
                 window.location.href = '/personalize';
             } else {
