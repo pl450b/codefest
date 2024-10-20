@@ -136,16 +136,27 @@ def confirmchallenge():
 
     return response
 
-@app.route('/get_uname', methods=['GET'])
+@app.route('/get_user', methods=['GET'])
 def return_username():
     data = request.get_json()
     session_token = data.get('sessionToken')
     username = get_user_from_token(session_token)
+    
+    print(f"[FLASK] Sending username {username} from get request")
+
+    response = make_response(jsonify({"username": username}))
+    return response;
 
     print
+
+@app.route('/user/<username>/challenge/<int:chal_id>', methods=['POST'])
+def update_complete_challenge(username, chal_id):
+    data = request.get_json()
+
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
     print("user wants a ai suggestion")
+
 # Start the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
