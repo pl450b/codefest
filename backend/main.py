@@ -94,7 +94,9 @@ def make_login():
 @app.route('/preferences', methods=['POST'])
 def record_preferences():
     data = request.get_json()
-    print(data.sessionToken)
+    token = data.get('sessionToken')
+    username = get_user_from_token(token)
+    print(f"Token: {token}, username {username}")
     
     response = make_response(jsonify({"message": "New user added!"}))
     return response  # Return the response to the client

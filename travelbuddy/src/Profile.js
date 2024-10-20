@@ -65,7 +65,9 @@ const Profile = () => {
             </div>
 
             <div className="account-stats">
-                <h1>Account Stats</h1>
+                <div className="heading-container">
+                    <h1>Account Stats</h1>
+                </div>
                 <div className="stats-container">
                     <div className="stat-container">
                         <h3 className="stat-title">Total Points:</h3>
@@ -85,7 +87,9 @@ const Profile = () => {
                     </div>
                 </div>
 
-                <h1>Recent Challenges</h1>
+                <div className="heading-container">
+                    <h1>Recent Challenges</h1>
+                </div>
                 <div className="recent-challenges">
                     {recentChallenges.map(challenge => (
                         <div className="challenge-container" key={challenge.id}>

@@ -126,8 +126,8 @@ def get_user_from_token(token):
     finally:
         if cursor:
             cursor.close()  # Close the cursor
-        if conn:
-            conn.close()  # Close the connection
+        if connection:
+            connection.close()  # Close the connection
 
 def add_user(username, password):
     return_val = False

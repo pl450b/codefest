@@ -26,7 +26,12 @@
     padding: 10px 20px;
 }
 
-.navbar ul li a{
+.nav-link{
+    text-decoration: none;
+    color: #fef9e7;
+}
+
+.navbar ul a li{
     text-decoration: none;
     color: #fef9e7;
 }

@@ -14,11 +14,10 @@ const Navbar = () => {
         <div class="navbar">
             <img src="./imgs/mariott-logo.png" alt="" class="company_logo"/>
             <ul>
-                <li><Link to="/dashboard">Dashboard</Link></li>
-                <li><Link to="/survey">Survey</Link></li>
-                <li><Link to="/profile">Profile</Link></li>
-                <li><Link to="/" onClick={SignOut}>Sign Out</Link></li>
-
+                <Link to="/dashboard" class="nav-link"><li>Dashboard</li></Link>
+                <Link to="/survey" class="nav-link"><li>Survey</li></Link>
+                <Link to="/profile" class="nav-link"><li>Profile</li></Link>                
+                <Link to="/login" onCick={SignOut} class="nav-link"><li>Sign Out</li></Link>
             </ul>
             <img src={profilePic} alt="" class="profile_pic"/>
 
