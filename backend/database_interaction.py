@@ -347,6 +347,39 @@ def user_exists_in_survey(username):
             connection.close()
 
 
+def mark_challenge_as_complete(username):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Update the `sel_challenge` field to NULL to mark the challenge as complete
+        query = sql.SQL("UPDATE user_survey SET sel_challenge = NULL WHERE username = %s;")
+        cursor.execute(query, (username,))
+        connection.commit()
+
+        print(f"[DATABASE] Challenge marked as complete for user '{username}'")
+        return True
+
+    except Exception as error:
+        print(f"Error while marking challenge as complete: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
+
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
