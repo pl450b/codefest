@@ -233,7 +233,7 @@ def update_selected_challenge(username, selected_challenge):
             connection.close()
 
 
-def update_user_preferences(username, travel_frequency, destination_preference, traveler_type, documentation_style):
+def update_user_preferences(username, travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel):
     try:
         # Connect to the PostgreSQL server
         connection = psycopg2.connect(
@@ -245,18 +245,39 @@ def update_user_preferences(username, travel_frequency, destination_preference, 
         
         cursor = connection.cursor()
 
-        # Insert or update user preferences in the user_travel_profiles table
-        query = """
-        INSERT INTO user_travel_profiles (username, travel_frequency, destination_preference, traveler_type, documentation_style)
-        VALUES (%s, %s, %s, %s, %s)
-        ON CONFLICT (username) DO UPDATE SET
-        travel_frequency = EXCLUDED.travel_frequency,
-        destination_preference = EXCLUDED.destination_preference,
-        traveler_type = EXCLUDED.traveler_type,
-        documentation_style = EXCLUDED.documentation_style;
-        """
+        # Check if the user already exists
+        cursor.execute("SELECT COUNT(*) FROM user_travel_profiles WHERE username = %s;", (username,))
+        user_exists = cursor.fetchone()[0] > 0
 
-        cursor.execute(query, (username, travel_frequency, destination_preference, traveler_type, documentation_style))
+        if user_exists:
+            # User exists: Update their preferences
+            query = """
+            UPDATE user_travel_profiles SET
+                travel_frequency = %s,
+                destination_preference = %s,
+                traveler_type = %s,
+                travel_habits = %s,
+                documentation_style = %s
+            WHERE username = %s;
+            """
+            cursor.execute(query, (travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel, username))
+        else:
+            # User does not exist: Insert new user and add initial challenge
+            query = """
+            INSERT INTO user_travel_profiles (username, travel_frequency, destination_preference, traveler_type, travel_habits, documentation_style)
+            VALUES (%s, %s, %s, %s, %s, %s);
+            """
+            cursor.execute(query, (username, travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel))
+
+            # Add a row for the user's initial challenge
+            initial_challenge = "Welcome Challenge"  # Define an appropriate challenge here
+            challenge_query = """
+            INSERT INTO user_challenges (username, selected_challenge)
+            VALUES (%s, %s);
+            """
+            cursor.execute(challenge_query, (username, initial_challenge))
+
+        # Commit the transaction
         connection.commit()
 
         print(f"[DATABASE] Preferences set for user '{username}'")
@@ -272,6 +293,7 @@ def update_user_preferences(username, travel_frequency, destination_preference, 
             cursor.close()
         if connection:
             connection.close()
+
 
 
 if __name__ == "__main__":

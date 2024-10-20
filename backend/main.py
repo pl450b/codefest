@@ -101,21 +101,21 @@ def record_preferences():
     if not username:
         return jsonify({"message": "Invalid session token"}), 401
 
-    # Extract the user preferences from selectedInterests
-    preferences = data.get('selectedInterests')
-    if not preferences or len(preferences) != 4:
-        return jsonify({"message": "Invalid preferences data"}), 400
+    # Extract the user preferences from the JSON
+    travel_frequency = data.get('travelFrequency')  # e.g., 'Frequently'
+    travel_destinations = data.get('travelDestinations')  # e.g., ['Beach', 'Mountains']
+    travel_personality = data.get('travelPersonality')  # e.g., 'Somewhat organized'
+    travel_habits = data.get('travelHabits')  # e.g., ['Morning person']
+    documenting_travel = data.get('documentingTravel')  # e.g., 'Social media posts'
 
-    # Extract each preference
-    travel_frequency = preferences[0]  # travelFrequency
-    destination_preference = preferences[1]  # travelDestinations
-    traveler_type = preferences[2]  # travelPersonality
-    documentation_style = preferences[3]  # documentingTravel
+    # Combine lists into comma-separated strings to store them in the database
+    travel_destinations_str = ", ".join(travel_destinations) if travel_destinations else ""
+    travel_habits_str = ", ".join(travel_habits) if travel_habits else ""
 
-    print(f"[FLASK] {username} preferences: {preferences}")
+    print(f"[FLASK] {username} preferences: Frequency: {travel_frequency}, Destinations: {travel_destinations_str}, Personality: {travel_personality}, Habits: {travel_habits_str}, Documenting: {documenting_travel}")
 
     # Save preferences to the database
-    if update_user_preferences(username, travel_frequency, destination_preference, traveler_type, documentation_style):
+    if update_user_preferences(username, travel_frequency, travel_destinations_str, travel_personality, travel_habits_str, documenting_travel):
         return jsonify({"message": "Preferences recorded successfully!"}), 200
     else:
         return jsonify({"message": "Failed to record preferences"}), 500
