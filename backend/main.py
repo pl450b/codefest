@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -52,11 +52,11 @@ def login():
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
-        
+        add_token(username, token)        
         # Create a response to send back to the client
-        response = make_response(jsonify({"message": "Login successful!"}))
+        response = make_response(jsonify({"user_token": token}))
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
-        response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
+        #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
         
         return response  # Return the response to the client
     else:
@@ -77,7 +77,6 @@ def index():
 
 @app.route('/', methods=['POST'])
 def make_login():
-    print("emre is tierd")
     # Extract username and password from the JSON body of the POST request
     username = request.json.get('username')
     password = request.json.get('password')
@@ -95,7 +94,9 @@ def make_login():
 @app.route('/preferences', methods=['POST'])
 def record_preferences():
     data = request.get_json()
-    print(data)
+    token = data.get('sessionToken')
+    username = get_user_from_token(token)
+    print(f"Token: {token}, username {username}")
     
     response = make_response(jsonify({"message": "New user added!"}))
     return response  # Return the response to the client
@@ -104,10 +105,24 @@ def record_preferences():
 @app.route('/confirmchallenge', methods=['POST'])
 def confirmchallenge():
     data = request.get_json()
-    print(data)
+    session_token = data.get("sessionToken")
+    selected_challenge = data.get("selectedChallenge")
+    
+    if session_token:
+        username = get_user_from_token(session_token)
+        
+        if username:
+            if update_selected_challenge(username, selected_challenge):
+                response = make_response(jsonify({"message": "Challenge recorded"}))
+            else:
+                response = make_response(jsonify({"message": "Failed to record challenge"}), 500)
+        else:
+            response = make_response(jsonify({"message": "Invalid session token"}), 401)
+    else:
+        response = make_response(jsonify({"message": "Invalid session token"}), 401)
 
-    response = make_response(jsonify({"message": "New user added!"}))
     return response
+
 
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():

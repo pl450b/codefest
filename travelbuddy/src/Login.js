@@ -24,7 +24,7 @@ export default function Login() {
 
         const data = await response.json();
         if (response.ok) {
-            localStorage.setItem('sessionToken', data.token);
+            localStorage.setItem('sessionToken', data.user_token);
             window.location.href = '/dashboard';
         } else {
             setErrorMessage(data.message); // Update error message
