@@ -146,13 +146,22 @@ def return_username():
     print(f"[FLASK] Sending username {username} from get request")
 
     response = make_response(jsonify({"username": username}))
-    return response;
+    return response
 
     print
 
 @app.route('/user/<username>/challenge/<int:chal_id>', methods=['POST'])
 def update_complete_challenge(username, chal_id):
-    data = request.get_json()
+    session_token = request.headers.get('sessionToken')
+    scan_user = get_user_from_token(session_token)
+
+    if(scan_user == 'business'):
+        print(f"User {username} verified by {scan_user}")
+    else:
+        print(f"User {username} not verified by {scan_user}")
+
+    response = make_response(jsonify({"message": "lord may there be peace on earth"}))
+    return response
 
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
