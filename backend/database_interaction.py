@@ -283,8 +283,35 @@ def update_user_preferences(username, preferences):
             connection.close()
 
 
+def user_exists_in_survey(username):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
 
+        # Check if the username exists in the user_survey table
+        query = "SELECT COUNT(*) FROM user_survey WHERE username = %s;"
+        cursor.execute(query, (username,))
+        user_exists = cursor.fetchone()[0] > 0
 
+        return user_exists
+
+    except Exception as error:
+        print(f"Error while checking if user exists in survey: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 
 if __name__ == "__main__":
