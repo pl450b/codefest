@@ -95,13 +95,31 @@ def make_login():
 def record_preferences():
     data = request.get_json()
     token = data.get('sessionToken')
-    username = get_user_from_token(token)
-    preferences = data.get('selectedInterests')
-    print(f"[FLASK] {username} preferences: {preferences}")
     
-    response = make_response(jsonify({"message": "New user added!"}))
-    return response  # Return the response to the client
-    print("Form submitted!!")
+    # Get username from the token
+    username = get_user_from_token(token)
+    if not username:
+        return jsonify({"message": "Invalid session token"}), 401
+
+    # Extract the user preferences from selectedInterests
+    preferences = data.get('selectedInterests')
+    if not preferences or len(preferences) != 4:
+        return jsonify({"message": "Invalid preferences data"}), 400
+
+    # Extract each preference
+    travel_frequency = preferences[0]  # travelFrequency
+    destination_preference = preferences[1]  # travelDestinations
+    traveler_type = preferences[2]  # travelPersonality
+    documentation_style = preferences[3]  # documentingTravel
+
+    print(f"[FLASK] {username} preferences: {preferences}")
+
+    # Save preferences to the database
+    if update_user_preferences(username, travel_frequency, destination_preference, traveler_type, documentation_style):
+        return jsonify({"message": "Preferences recorded successfully!"}), 200
+    else:
+        return jsonify({"message": "Failed to record preferences"}), 500
+
 
 @app.route('/confirmchallenge', methods=['POST'])
 def confirmchallenge():
