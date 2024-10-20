@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user, add_token, get_user_from_token
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -105,10 +105,24 @@ def record_preferences():
 @app.route('/confirmchallenge', methods=['POST'])
 def confirmchallenge():
     data = request.get_json()
-    print(data)
+    session_token = data.get("sessionToken")
+    selected_challenge = data.get("selectedChallenge")
+    
+    if session_token:
+        username = get_user_from_token(session_token)
+        
+        if username:
+            if update_selected_challenge(username, selected_challenge):
+                response = make_response(jsonify({"message": "Challenge recorded"}))
+            else:
+                response = make_response(jsonify({"message": "Failed to record challenge"}), 500)
+        else:
+            response = make_response(jsonify({"message": "Invalid session token"}), 401)
+    else:
+        response = make_response(jsonify({"message": "Invalid session token"}), 401)
 
-    response = make_response(jsonify({"message": "New user added!"}))
     return response
+
 
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():

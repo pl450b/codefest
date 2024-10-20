@@ -200,6 +200,39 @@ def remove_user(username):
         if connection:
             connection.close()
 
+
+def update_selected_challenge(username, selected_challenge):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Update or set the selected_challenge for the user
+        query = sql.SQL("UPDATE auth SET sel_challenge = %s WHERE username = %s;")
+        cursor.execute(query, (selected_challenge, username))
+        connection.commit()
+
+        print(f"[DATABASE] Challenge '{selected_challenge}' set for user '{username}'")
+        return True
+
+    except Exception as error:
+        print(f"Error while updating selected challenge: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
