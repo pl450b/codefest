@@ -104,9 +104,12 @@ def record_preferences():
 @app.route('/confirmchallenge', methods=['POST'])
 def confirmchallenge():
     data = request.get_json()
-    print(data)
+    session_token = data.get("sessionToken")
+    selected_challenge = data.get("selectedChallenge")
 
-    response = make_response(jsonify({"message": "New user added!"}))
+    if session_token and verify_jwt(session_tokens):
+        response = make_response(jsonify({"message": "Challenge recorded"}))
+
     return response
 
 @app.route('/suggestion', methods=['GET'])
