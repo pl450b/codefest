@@ -8,7 +8,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 export default function Dashboard() {
     const ipAddress = '172.31.104.7';
     const port = '5000';
-    const url = `http://${ipAddress}:${port}`; 
+    const url = `http://${ipAddress}:${port}`;
     const [showConfirmButton, setShowConfirmButton] = useState(false);
     const [selectedChallenge, setSelectedChallenge] = useState(null);
     const [centeredChallenge, setCenteredChallenge] = useState(null);
@@ -26,19 +26,19 @@ export default function Dashboard() {
                 'sessionToken': `${localStorage.getItem('sessionToken')}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            if(data.length === 1){
-                setCenteredChallenge(data[0]);
-                setConfirmButtonClicked(true);
-            }
-            else{
-                setChallengesList(data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching challenges:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 1) {
+                    setCenteredChallenge(data[0]);
+                    setConfirmButtonClicked(true);
+                }
+                else {
+                    setChallengesList(data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching challenges:', error);
+            });
     });
 
     const generateChallengeUrl = async (challengeName) => {
@@ -51,12 +51,15 @@ export default function Dashboard() {
                 },
             });
             const data = await response.json();
-            return `http://${url}/user/${data.username[0]}/challenge/${challengeName}`;
+
+            // Generate URL for completing the challenge with user-specific info
+            return `http://${ipAddress}:${port}/complete-challenge?user=${data.username}&challenge=${encodeURIComponent(challengeName)}`;
         } catch (error) {
             console.error('Error getting username:', error);
             return null; // Return null or handle error as needed
         }
     };
+
 
     const handleChallengeClick = (event, challenge) => {
         setSelectedChallenge(challenge);
@@ -76,16 +79,16 @@ export default function Dashboard() {
 
         const ipAddress = '172.31.104.7';
         const port = '5000';
-        const url2 = `http://${ipAddress}:${port}/confirmchallenge`;   
+        const url2 = `http://${ipAddress}:${port}/confirmchallenge`;
 
         const response = await fetch(`${url2}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 
-                sessionToken: localStorage.getItem('sessionToken'), 
-                selectedChallenge 
+            body: JSON.stringify({
+                sessionToken: localStorage.getItem('sessionToken'),
+                selectedChallenge
             }),
         });
 
@@ -121,21 +124,21 @@ export default function Dashboard() {
                         ) : (
                             <>
                                 <div onClick={(e) => handleChallengeClick(e, ["Daybreak Expedition", "+75 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"])}>
-                                    <Challenge challengeInfo={["Daybreak Expedition", "+300 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"]}/>
+                                    <Challenge challengeInfo={["Daybreak Expedition", "+300 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"]} />
                                 </div>
                                 <div onClick={(e) => handleChallengeClick(e, ["Tavern Ties", "+50 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"])}>
-                                    <Challenge challengeInfo={["Tavern Ties", "+500 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]}/>
+                                    <Challenge challengeInfo={["Tavern Ties", "+500 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]} />
                                 </div>
                                 <div onClick={(e) => handleChallengeClick(e, ["Tavern Ties", "+50 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"])}>
-                                    <Challenge challengeInfo={["Swift Sights", "+450 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]}/>
+                                    <Challenge challengeInfo={["Swift Sights", "+450 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]} />
                                 </div>
                             </>
                         )}
                     </div>
                     {/* Show the confirm button if a challenge is selected */}
                     {showConfirmButton && (
-                        <button 
-                            className="confirm-button" 
+                        <button
+                            className="confirm-button"
                             onClick={handleConfirmClick}
                         >
                             Accept {selectedChallenge[0]}
@@ -143,9 +146,9 @@ export default function Dashboard() {
                     )}
 
                     {confirmButtonClicked && showQRCode && (
-                            <button class="complete-button" onClick={handleCompleteClick}>
-                                Complete {selectedChallenge[0]}
-                            </button>                        
+                        <button class="complete-button" onClick={handleCompleteClick}>
+                            Complete {selectedChallenge[0]}
+                        </button>
                     )}
                 </div>
 

@@ -169,6 +169,25 @@ def update_complete_challenge(username, chal_id):
 def ai_suggestion():
     print("user wants a ai suggestion")
 
+
+@app.route('/complete-challenge', methods=['GET'])
+def complete_challenge():
+    # Get user and challenge information from the URL parameters
+    username = request.args.get('user')
+    challenge = request.args.get('challenge')
+    
+    if username and challenge:
+        # Logic to mark the challenge as completed for the user
+        try:
+            # Assuming you have a function that marks a challenge complete
+            mark_challenge_as_complete(username, challenge)
+            return jsonify({"message": "Challenge completed successfully!"}), 200
+        except Exception as e:
+            print(f"Error completing challenge: {e}")
+            return jsonify({"message": "Error completing challenge"}), 500
+    else:
+        return jsonify({"message": "Invalid parameters"}), 400
+        
 # Start the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
