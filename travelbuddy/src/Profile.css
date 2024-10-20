@@ -92,7 +92,8 @@
     display: flex; /* Use flexbox for layout */
     flex-direction: column; /* Arrange header and stats vertically */
     justify-content: center;
-    text-align: center;
+    align-items: center;
+    width: 100%;
 }
 
 .stats-container {
@@ -104,7 +105,7 @@
 }
 
 .stat-container {
-    background-color: #f9f9f9; /* Light background for visibility */
+    background-color: rgba(247, 209, 163, .8); /* Light background for visibility */
     border: 1px solid #ccc; /* Border for separation */
     border-radius: 5px; /* Rounded corners */
     padding: 10px; /* Padding inside the container */
@@ -120,13 +121,13 @@
     justify-content: center;
     flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
     gap: 15px; /* Space between containers */
-    margin-top: 20px; /* Space above the recent challenges section */
+    /*margin-top: 20px;  Space above the recent challenges section */
     width: 100%;
     /*align-items: center; */
 }
 
 .challenge-container {
-    background-color: #f9f9f9; /*Light background for visibility */
+    background-color: rgba(247, 209, 163, .8); /*Light background for visibility */
     border: 1px solid #ccc; /* Border for separation */
     border-radius: 5px; /* Rounded corners */
     padding: 10px; /* Padding inside the container */
@@ -149,3 +150,24 @@
 .stat-value {
     margin: 5px 0 0; /* Add some margin above the value */
 }
+
+.heading-container {
+    /* font-size: 2em; */
+    width:fit-content;
+    font-family: 'Georgia', serif;
+    color:  #fef9e7;
+    padding: 10px 5px;
+    margin: 20px 0px;
+    background-color: rgba(247, 209, 163, .4);
+    border: 1px solid #ccc; /* Border for separation */
+    border-radius: 7px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.heading-container h1{
+    padding: 0px;
+    margin: 0px;
+
+}
+
+
