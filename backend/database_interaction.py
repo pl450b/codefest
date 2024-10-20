@@ -217,11 +217,22 @@ def check_selected_challenge(username):
         cursor.execute(query, (username,))
         
         result = cursor.fetchone()
+
         cursor.close()
 
-        print(f"[DATABASE] Grabed challenge {result[0]} from user {username}")
+        if not result[0]:
+            return []
 
-        return result[0] if result else NONE
+        # Step 1: Remove the curly braces
+        clean_string = result[0].strip("{}")
+
+        # Step 2: Split by comma to get each element
+        elements = clean_string.split(",")
+
+        # Step 3: Remove quotes and extra spaces from each element
+        array = [element.strip().strip('"') for element in elements]
+
+        return array
 
     except Exception as error:
         print(f"Error while finding challenge: {error}")

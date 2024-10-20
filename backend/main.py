@@ -171,7 +171,7 @@ def ai_suggestion():
 
     selectedChallenge = check_selected_challenge(username)
 
-    if selectedChallenge == None:
+    if len(selectedChallenge) == 0:
         user_profile = get_user_profile(username)
         suggested_quests = find_matching_quest(user_profile)
 
