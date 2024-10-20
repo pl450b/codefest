@@ -55,7 +55,7 @@ def login():
         token = generate_jwt(user_id)
         add_token(username, token)        
         # Redirect the user to the /personalize route
-        return redirect(url_for('personalize'))
+        return redirect('/personalize')
     else:
         print(f"failed login from {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
