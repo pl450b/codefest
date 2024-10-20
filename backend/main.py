@@ -102,17 +102,8 @@ def record_preferences():
     if not username:
         return jsonify({"message": "Invalid session token"}), 401
 
-    # Combine preferences into a single JSON string
-    preferences = {
-        "travel_frequency": data.get('travelFrequency'),
-        "destination_preference": data.get('travelDestinations'),
-        "traveler_type": data.get('travelPersonality'),
-        "time_preference": data.get('travelHabits'),
-        "documentation_style": data.get('documentingTravel')
-    }
-
-    # Convert the preferences dictionary to a JSON string
-    preferences_str = json.dumps(preferences)
+    # Convert the entire JSON data to a string to store directly
+    preferences_str = json.dumps(data)
 
     print(f"[FLASK] {username} preferences: {preferences_str}")
 
@@ -121,6 +112,7 @@ def record_preferences():
         return jsonify({"message": "Preferences recorded successfully!"}), 200
     else:
         return jsonify({"message": "Failed to record preferences"}), 500
+
 
 
 @app.route('/confirmchallenge', methods=['POST'])
