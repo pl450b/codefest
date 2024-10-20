@@ -59,7 +59,7 @@ def login():
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
         #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
         
-        return response  # Return the response to the client
+        return redirect("/personalize")  # Return the response to the client
     else:
         print(f"failed login from {username}")
         # Return a 401 Unauthorized response if the credentials are invalid
