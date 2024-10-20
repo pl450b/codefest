@@ -105,21 +105,12 @@ def record_preferences():
 @app.route('/confirmchallenge', methods=['POST'])
 def confirmchallenge():
     data = request.get_json()
-    session_token = data.get("sessionToken")
-    selected_challenge = data.get("selectedChallenge")
+    session_token = data.get('sessionToken')
+    print(session_token)
+    selected_challenge = data.get('selectedChallenge')
     
-    if session_token:
-        username = get_user_from_token(session_token)
-        
-        if username:
-            if update_selected_challenge(username, selected_challenge):
-                response = make_response(jsonify({"message": "Challenge recorded"}))
-            else:
-                response = make_response(jsonify({"message": "Failed to record challenge"}), 500)
-        else:
-            response = make_response(jsonify({"message": "Invalid session token"}), 401)
-    else:
-        response = make_response(jsonify({"message": "Invalid session token"}), 401)
+    username = get_user_from_token(session_token)
+    response = make_response(jsonify({"message": "Challenge recorded"}))
 
     return response
 
