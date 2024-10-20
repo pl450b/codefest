@@ -77,3 +77,27 @@ h2 {
 .submit-button:hover {
     background-color: #218838;
 }
+
+/* Close button styling */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #333; /* Dark grey */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .close-button:hover {
+    background-color: #555; /* Lighter grey when hovered */
+  }
+  
