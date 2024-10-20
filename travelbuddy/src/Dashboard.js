@@ -28,12 +28,12 @@ export default function Dashboard() {
         })
         .then(response => response.json())
         .then(data => {
-            if(data.length === 1){
-                setCenteredChallenge(data[0]);
+            if(data.challenges.length === 1){
+                setCenteredChallenge(data.challenges[0]);
                 setConfirmButtonClicked(true);
             }
             else{
-                setChallengesList(data);
+                setChallengesList(data.challenges);
             }
         })
         .catch(error => {
