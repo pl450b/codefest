@@ -7,6 +7,7 @@ DB_NAME = 'codefest'
 DB_USER = 'codefest_user'
 DB_PASS = 'Party@H0tel'
 
+
 def hash_pass(input_string):
     # Encode the string to bytes
     encoded_string = input_string.encode()
