@@ -28,18 +28,21 @@ const Profile = () => {
         console.log("Your Account Has Been Deleted.")
     }
 
+    const ranks = ["Fledgling", "Wanderer", "Adventurer"];
+    const randomIndex = Math.floor(Math.random() * ranks.length);
+
     const userStats = {
-    totalPoints: 1250,
-    completedChallenges: 15,
-    currentStreak: 7,
-    ranking: 42
-  };
+        randomRank: ranks[randomIndex],
+        totalPoints: "20,390",
+        completedChallenges: 24,
+        currentStreak: 7
+    };
 
   // Sample recent challenges data
   const recentChallenges = [
-    { id: 1, name: "30 Days of Code", points: 500, completed: "2024-03-15" },
-    { id: 2, name: "Bug Hunter", points: 300, completed: "2024-03-10" },
-    { id: 3, name: "Team Challenge", points: 450, completed: "2024-03-05" }
+    { id: 1, name: "Tavern Ties", points: 500, completed: "2024-03-15" },
+    { id: 2, name: "Daybreak Expedition", points: 300, completed: "2024-03-10" },
+    { id: 3, name: "Swift Sights", points: 450, completed: "2024-03-05" }
   ];
 
   return (
@@ -70,7 +73,7 @@ const Profile = () => {
                 </div>
                 <div className="stats-container">
                     <div className="stat-container">
-                        <h3 className="stat-title">Total Points:</h3>
+                        <h3 className="stat-title">Lifetime Points:</h3>
                         <p className="stat-value">{userStats.totalPoints}</p>
                     </div>
                     <div className="stat-container">
@@ -82,8 +85,8 @@ const Profile = () => {
                         <p className="stat-value">{userStats.currentStreak}</p>
                     </div>
                     <div className="stat-container">
-                        <h3 className="stat-title">Ranking:</h3>
-                        <p className="stat-value">{userStats.ranking}</p>
+                        <h3 className="stat-title">Current Rank:</h3>
+                        <p className="stat-value">{userStats.randomRank}</p>
                     </div>
                 </div>
 
@@ -94,7 +97,7 @@ const Profile = () => {
                     {recentChallenges.map(challenge => (
                         <div className="challenge-container" key={challenge.id}>
                             <h4>{challenge.name}</h4>
-                            <p>{challenge.points} points</p>
+                            <p>+{challenge.points} points</p>
                             <p>Completed on: {challenge.completed}</p>
                         </div>
                     ))}
