@@ -3,12 +3,6 @@ import Login from './Login';
 import PersonalizationForm from './PersonalizationForm'
 import Dashboard from './Dashboard'
 import Profile from './Profile'
-import Rewards from './Rewards'
-import './App.css';
-import './SignUp.css';
-import './Login.css';
-import './PersonalizationForm.css';
-import './Rewards.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {

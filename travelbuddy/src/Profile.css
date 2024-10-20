@@ -35,19 +35,18 @@
     border-radius: 5px;
 }
 
-.profile-change-container button {
-    padding: 10px 20px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.profile-change-container {
+    flex: 1; /* Take up half of the width */
+    padding: 20px; /* Add some padding for aesthetics */
+    display: flex;
+    flex-direction: column; /* Arrange elements in a column */
+    align-items: center; /* Center items horizontally */
+    text-align: center; /* Center text inside this container */
 }
 
-.profile-change-container {
-    display: flex;
-    align-items: center; /* Centers the challenge cards vertically */
-    flex-direction: column;
+.profile-change-container button {
+    display: block; /* Ensures the button takes the full width available */
+    margin-top: 10px; /* Adds spacing above the button */
 }
 
 .delete_btn{
@@ -73,18 +72,80 @@
     align-items: center;
 }
 
-.account-info{
-
+.account-info {
     display: flex;
-    flex-direction: row;
-    margin: 20px, 0px;
-    align-content: space-between;
+    justify-content: center; /* Center the flex items horizontally */
+    align-items: stretch; /* Make sure they stretch to the same height */
+    margin: 20px 0; /* Corrected margin */
     width: 100vw;
-
 }
 
-.vertical-line{
-    width: 2px;
-    height: 100px;
-    background-color: black;
+
+.vertical-line {
+    display: none; /* Hide vertical line as we are using flexbox */
+}
+
+.account-stats {
+    flex: 1; /* Take up the other half of the width */
+    padding: 20px; /* Add some padding for aesthetics */
+    border-left: 2px solid black; /* Optional: visual separator */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange header and stats vertically */
+    justify-content: center;
+    text-align: center;
+}
+
+.stats-container {
+    display: flex; /* Use flexbox for the statistics */
+    flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
+    gap: 15px; /* Space between containers */
+    width: 100%;
+    justify-content: center;
+}
+
+.stat-container {
+    background-color: #f9f9f9; /* Light background for visibility */
+    border: 1px solid #ccc; /* Border for separation */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside the container */
+    width: 150px; /* Fixed width for each container */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Arrange elements in a column */
+    align-items: center; /* Center align items horizontally */
+    text-align: center; /* Center text inside the container */
+}
+
+.recent-challenges {
+    display: flex; /* Use flexbox for recent challenges */
+    justify-content: center;
+    flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
+    gap: 15px; /* Space between containers */
+    margin-top: 20px; /* Space above the recent challenges section */
+    width: 100%;
+    /*align-items: center; */
+}
+
+.challenge-container {
+    background-color: #f9f9f9; /*Light background for visibility */
+    border: 1px solid #ccc; /* Border for separation */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding inside the container */
+    width: 180px; /* Fixed width for each challenge container */
+    display: flex; /* Use flexbox for alignment */
+    flex-direction: column; /* Arrange elements in a column */
+    align-items: center; /* Center align items horizontally */
+    text-align: center; /* Center text inside the container */
+}
+
+.stat-container h3 {
+    margin: 0; /* Remove default margin */
+}
+
+.stat-title {
+    font-weight: bold; /* Make the title bold for emphasis */
+    margin: 0; /* Remove default margin */
+}
+
+.stat-value {
+    margin: 5px 0 0; /* Add some margin above the value */
 }

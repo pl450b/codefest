@@ -7,6 +7,7 @@ DB_NAME = 'codefest'
 DB_USER = 'codefest_user'
 DB_PASS = 'Party@H0tel'
 
+
 def hash_pass(input_string):
     # Encode the string to bytes
     encoded_string = input_string.encode()
@@ -50,7 +51,7 @@ def attempt_login(username, password):
             return_val = False
 
     except Exception as error:
-        print(f"Error while connecting to PostgreSQL: {error}")
+        print(f"Error while logging in: {error}")
         return_val = False
 
     finally:
@@ -60,6 +61,73 @@ def attempt_login(username, password):
         if connection:
             connection.close()
         return return_val
+
+def add_token(username, token):
+    return_val = False
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+
+        # Create a cursor object
+        cursor = connection.cursor()
+
+        # Write the SQL query
+        query = sql.SQL("UPDATE auth SET token = %s WHERE username = %s;")
+
+        # Execute the SQL query
+        cursor.execute(query, (token, username))
+        connection.commit()
+        print("[DATABASE] Token updated!")
+        return_val = True
+
+    except Exception as error:
+        print(f"Error while updating token: {error}")
+        return_val = False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+        return return_val
+
+def get_user_from_token(token):
+    try:
+        connection = psycopg2.connect(
+                host=DB_HOST,
+                database=DB_NAME,
+                user=DB_USER,
+                password=DB_PASS
+                )
+
+        cursor = connection.cursor()
+
+        query = "SELECT username FROM users WHERE token = %s;"
+
+        cursor.execute(query, (token,))
+
+        result = cursor.fetchone()
+
+        if result:
+            username = result[0]
+            return result
+        else:
+            print("[DATABASE] Token not found")
+            return None
+
+    except Exception as error:
+        print("Error fetching username from the database:", error)
+    finally:
+        if cursor:
+            cursor.close()  # Close the cursor
+        if conn:
+            conn.close()  # Close the connection
 
 def add_user(username, password):
     return_val = False

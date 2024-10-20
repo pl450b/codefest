@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -52,7 +52,7 @@ def login():
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
-        
+        add_token(username, token)        
         # Create a response to send back to the client
         response = make_response(jsonify({"message": "Login successful!"}))
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
@@ -77,7 +77,6 @@ def index():
 
 @app.route('/', methods=['POST'])
 def make_login():
-    print("emre is tierd")
     # Extract username and password from the JSON body of the POST request
     username = request.json.get('username')
     password = request.json.get('password')
