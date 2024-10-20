@@ -15,7 +15,8 @@ export default function Dashboard() {
     const [showQRCode, setShowQRCode] = useState(false);
     const [selectedChallengeUrl, setSelectedChallengeUrl] = useState('');
     const [completedChallenges, setCompletedChallenges] = useState([]); // Track completed challenges
-    const [challengesList, setChallengesList] = useState(null);
+    const [location, setLocation] = useState({ latitude: null, longitude: null }); // Store user location
+    const [city, setCity] = useState(""); // Store city name
 
     useEffect(() => {
         // Fetch active challenge from the backend
@@ -28,13 +29,7 @@ export default function Dashboard() {
         })
         .then(response => response.json())
         .then(data => {
-            if(data.length === 1){
-                setCenteredChallenge(data[0]);
-                setConfirmButtonClicked(true);
-            }
-            else{
-                setChallengesList(data);
-            }
+            // Process fetched challenges
         })
         .catch(error => {
             console.error('Error fetching challenges:', error);
@@ -88,6 +83,39 @@ export default function Dashboard() {
         setCompletedChallenges((prev) => [...prev, selectedChallenge[0]]);
     };
 
+    // Function to get and update geolocation
+    const updateLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setLocation({ latitude, longitude });
+                    fetchCityName(latitude, longitude); // Fetch city name based on coordinates
+                },
+                (error) => {
+                    console.error("Error fetching geolocation:", error);
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    };
+
+    // Function to fetch city name using OpenCage API
+    const fetchCityName = async (latitude, longitude) => {
+        const apiKey = '2ca5b650cfb4484aa6ac5e6100b9dcee'; // Replace with your OpenCage API key
+        const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const city = data.results[0].components.city || data.results[0].components.town || data.results[0].components.village || "Unknown Location";
+            setCity(city);
+        } catch (error) {
+            console.error("Error fetching city name:", error);
+        }
+    };
+
     return (
         <div className="dashboard-container">
             <Navbar />
@@ -98,7 +126,6 @@ export default function Dashboard() {
                     Available Quests
                 </h1>)}
                 <div className="challenge-with-confirm-button">
-
                     <div className="challenges-container">
                         {centeredChallenge ? (
                             <div className="challenge-qr-container">
@@ -155,6 +182,12 @@ export default function Dashboard() {
                         </button>                        
                     )}
                 </div>
+            </div>
+
+            {/* Container for the location button and info */}
+            <div className="location-container">
+                <button className="location-button" onClick={updateLocation}></button>
+                {city && <p className="location-info">Current Location: {city}</p>}
             </div>
         </div>
     );
