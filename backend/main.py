@@ -6,7 +6,7 @@ from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences
-from ai import *
+# from ai import *
 # Load environment variables from .env file
 load_dotenv()
 
