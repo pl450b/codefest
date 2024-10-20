@@ -1,10 +1,11 @@
 import jwt
 import os
-from flask import Flask, request, jsonify, make_response
+import json
+from flask import Flask, request, jsonify, make_response, redirect, url_for
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences, user_exists_in_survey
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -52,9 +53,15 @@ def login():
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
-        add_token(username, token)        
+        add_token(username, token)       
+        new_user = user_exists_in_survey(username)
+        new_user = not new_user
+        if new_user:
+            print("[FLASK] new user!")
+        else:
+            print("[FLASK] this user has been here before")
         # Create a response to send back to the client
-        response = make_response(jsonify({"user_token": token}))
+        response = make_response(jsonify({"user_token": token, "new_user": new_user}))
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
         #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
         
@@ -95,13 +102,27 @@ def make_login():
 def record_preferences():
     data = request.get_json()
     token = data.get('sessionToken')
-    username = get_user_from_token(token)
-    preferences = data.get('selectedInterests')
-    print(f"[FLASK] {username} preferences: {preferences}")
     
-    response = make_response(jsonify({"message": "New user added!"}))
-    return response  # Return the response to the client
-    print("Form submitted!!")
+    # Get username from the token
+    username = get_user_from_token(token)
+    if not username:
+        return jsonify({"message": "Invalid session token"}), 401
+
+    # Extract the selectedInterests object
+    selected_interests = data.get('selectedInterests')
+
+    # Convert the selectedInterests to a JSON string to store directly
+    preferences_str = json.dumps(selected_interests)
+
+    print(f"[FLASK] {username} preferences: {preferences_str}")
+
+    # Save preferences to the database
+    if update_user_preferences(username, preferences_str):
+        return jsonify({"message": "Preferences recorded successfully!"}), 200
+    else:
+        return jsonify({"message": "Failed to record preferences"}), 500
+
+
 
 @app.route('/confirmchallenge', methods=['POST'])
 def confirmchallenge():
@@ -118,10 +139,55 @@ def confirmchallenge():
 
     return response
 
+@app.route('/get_user', methods=['GET'])
+def return_username():
+    print("got here 6678")
+    session_token = request.headers.get('sessionToken')
+    username = get_user_from_token(session_token)
+    
+    print(f"[FLASK] Sending username {username} from get request")
+
+    response = make_response(jsonify({"username": username}))
+    return response
+
+    print
+
+@app.route('/user/<username>/challenge/<int:chal_id>', methods=['POST'])
+def update_complete_challenge(username, chal_id):
+    session_token = request.headers.get('sessionToken')
+    scan_user = get_user_from_token(session_token)
+
+    if(scan_user == 'business'):
+        print(f"User {username} verified by {scan_user}")
+    else:
+        print(f"User {username} not verified by {scan_user}")
+
+    response = make_response(jsonify({"message": "lord may there be peace on earth"}))
+    return response
 
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
     print("user wants a ai suggestion")
+
+
+@app.route('/complete-challenge', methods=['GET'])
+def complete_challenge():
+    # Get user and challenge information from the URL parameters
+    username = request.args.get('user')
+    challenge = request.args.get('challenge')
+    
+    if username and challenge:
+        # Logic to mark the challenge as completed for the user
+        try:
+            # Assuming you have a function that marks a challenge complete
+            mark_challenge_as_complete(username, challenge)
+            return jsonify({"message": "Challenge completed successfully!"}), 200
+        except Exception as e:
+            print(f"Error completing challenge: {e}")
+            return jsonify({"message": "Error completing challenge"}), 500
+    else:
+        return jsonify({"message": "Invalid parameters"}), 400
+        
 # Start the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

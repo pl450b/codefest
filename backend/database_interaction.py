@@ -233,6 +233,87 @@ def update_selected_challenge(username, selected_challenge):
             connection.close()
 
 
+def update_user_preferences(username, preferences):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Check if the user already exists
+        cursor.execute("SELECT COUNT(*) FROM user_survey WHERE username = %s;", (username,))
+        user_exists = cursor.fetchone()[0] > 0
+
+        if user_exists:
+            # User exists: Update their preferences
+            query = """
+            UPDATE user_survey SET
+                preferences = %s
+            WHERE username = %s;
+            """
+            cursor.execute(query, (preferences, username))
+        else:
+            # User does not exist: Insert new user
+            query = """
+            INSERT INTO user_survey (username, preferences)
+            VALUES (%s, %s);
+            """
+            cursor.execute(query, (username, preferences))
+
+        # Commit the transaction
+        connection.commit()
+
+        print(f"[DATABASE] Preferences set for user '{username}'")
+        return True
+
+    except Exception as error:
+        print(f"Error while updating user preferences: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
+def user_exists_in_survey(username):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Check if the username exists in the user_survey table
+        query = "SELECT COUNT(*) FROM user_survey WHERE username = %s;"
+        cursor.execute(query, (username,))
+        user_exists = cursor.fetchone()[0] > 0
+
+        return user_exists
+
+    except Exception as error:
+        print(f"Error while checking if user exists in survey: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")

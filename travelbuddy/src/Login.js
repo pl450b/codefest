@@ -25,11 +25,21 @@ export default function Login() {
         const data = await response.json();
         if (response.ok) {
             localStorage.setItem('sessionToken', data.user_token);
-            window.location.href = '/dashboard';
+            
+            console.log(data);
+
+            // Redirect based on the new_user value
+            alert(data.new_user)
+            if (data.new_user) {
+                window.location.href = '/personalize';
+            } else {
+                window.location.href = '/dashboard';
+            }
         } else {
             setErrorMessage(data.message); // Update error message
         }
     };
+
 
     return (
         <div className="login-page-container">
