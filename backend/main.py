@@ -177,7 +177,6 @@ def ai_suggestion():
 
         response = make_response(jsonify({"challenges": suggested_quests}))
     else:
-        print("WE HAVE ENDED UP HERE.")
         print(selectedChallenge)
         response = make_response(jsonify({"challenges": selectedChallenge}))
 
@@ -186,7 +185,7 @@ def ai_suggestion():
 @app.route('/completechallenge', methods=['POST'])
 def complete_challenge():
     print("[FLASK] Arrived at complete_challenge()")
-    username = get_user_from_token(reques.headers.get('sessionToken'))
+    username = get_user_from_token(request.headers.get('sessionToken'))
     
     status = clear_selected_challenge(username)
 

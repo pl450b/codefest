@@ -221,7 +221,7 @@ def check_selected_challenge(username):
         cursor.close()
 
         if not result[0]:
-            print("RESULT IS EMPTY")
+            print("[DATABASE] No selected challenge")
             return []
 
         # Step 1: Remove the curly braces
