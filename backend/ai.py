@@ -32,7 +32,7 @@ AVAILABLE_QUESTS = [
     "Swift Sights - Join a quick sightseeing tour (bike, segway, or boat) to cover more ground in less time."
 ]
 
-def get_user_profile(user_id):
+def get_user_profile(username):
     try:
         conn = psycopg2.connect(
             dbname=DB_NAME,
@@ -46,7 +46,7 @@ def get_user_profile(user_id):
                    time_preference, documentation_style
             FROM user_travel_profiles
             WHERE user_id = %s
-        """, (user_id,))
+        """, (username,))
         user_profile = cur.fetchone()
         cur.close()
         conn.close()
@@ -74,8 +74,8 @@ def find_matching_quest(user_profile):
     return AVAILABLE_QUESTS[best_match_idx]
 
 def main():
-    user_id = input("Enter the user ID: ")
-    user_profile = get_user_profile(user_id)
+    username = input("Enter the username: ")
+    user_profile = get_user_profile(username)
     
     if user_profile:
         print("\nUser Travel Profile:")

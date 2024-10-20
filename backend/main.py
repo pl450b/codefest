@@ -96,7 +96,8 @@ def record_preferences():
     data = request.get_json()
     token = data.get('sessionToken')
     username = get_user_from_token(token)
-    print(f"Token: {token}, username {username}")
+    preferences = data.get('selectedInterests')
+    print(f"[FLASK] {username} preferences: {preferences}")
     
     response = make_response(jsonify({"message": "New user added!"}))
     return response  # Return the response to the client

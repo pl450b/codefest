@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import Challenge from './Challenge';
+import ChallengeCard from './Challenge';
 import './Dashboard.css';
 import Navbar from './Navbar';
 import { QRCodeCanvas } from 'qrcode.react';
-
 
 export default function Dashboard() {
     const ipAddress = '172.31.104.7';
@@ -15,6 +14,7 @@ export default function Dashboard() {
     const [confirmButtonClicked, setConfirmButtonClicked] = useState(false);
     const [showQRCode, setShowQRCode] = useState(false);
     const [selectedChallengeUrl, setSelectedChallengeUrl] = useState('');
+    const [completedChallenges, setCompletedChallenges] = useState([]); // Track completed challenges
     const [challengesList, setChallengesList] = useState(null);
 
     useEffect(() => {
@@ -52,12 +52,13 @@ export default function Dashboard() {
     });
 
     const generateChallengeUrl = (challengeName) => {
-        // Replace this with your backend endpoint
         const baseUrl = `${url}/challenge`;
         return `${baseUrl}?name=${encodeURIComponent(challengeName)}`;
     };
 
     const handleChallengeClick = (event, challenge) => {
+        // Prevent interaction with completed challenges
+        if (completedChallenges.includes(challenge[0])) return;
         setSelectedChallenge(challenge);
         setShowConfirmButton(true);
     };
@@ -70,31 +71,32 @@ export default function Dashboard() {
         setShowConfirmButton(false);
         setConfirmButtonClicked(true);
 
+        const ipAddress = '172.31.104.7';
+        const port = '5000';
+        const url2 = `http://${ipAddress}:${port}/confirmchallenge`;   
 
-    const ipAddress = '172.31.104.7';
-    const port = '5000';
-    const url2 = `http://${ipAddress}:${port}/confirmchallenge`;   
-
-    const response = await fetch(`${url2}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-            sessionToken: localStorage.getItem('sessionToken'), 
-            selectedChallenge 
-        }),
-    });
+        const response = await fetch(`${url2}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                sessionToken: localStorage.getItem('sessionToken'), 
+                selectedChallenge 
+            }),
+        });
 
         const data = await response.json();
-
-        console.log(data)
+        console.log(data);
     };
 
     const handleCompleteClick = () => {
         setConfirmButtonClicked(false);
         setCenteredChallenge(null);
-    }
+
+        // Mark the challenge as completed
+        setCompletedChallenges((prev) => [...prev, selectedChallenge[0]]);
+    };
 
     return (
         <div className="dashboard-container">
@@ -105,32 +107,50 @@ export default function Dashboard() {
                 </h1>) : (<h1 className="challenges-header">
                     Available Quests
                 </h1>)}
-                <div class="challenge-with-confirm-button">
+                <div className="challenge-with-confirm-button">
 
                     <div className="challenges-container">
                         {centeredChallenge ? (
-                            <div class="challenge-qr-container">
-                                <Challenge challengeInfo={centeredChallenge} centered />
+                            <div className="challenge-qr-container">
+                                <ChallengeCard 
+                                    challengeInfo={centeredChallenge} 
+                                    className={completedChallenges.includes(centeredChallenge[0]) ? 'completed' : ''} 
+                                />
                                 <div className="qr-code-container">
-                                    <QRCodeCanvas class="qr-code" value={selectedChallengeUrl} /> {/* Updated Component */}
+                                    <QRCodeCanvas className="qr-code" value={selectedChallengeUrl} />
                                 </div>
                             </div>
                         ) : (
                             <>
-                                <div onClick={(e) => handleChallengeClick(e, ["Daybreak Expedition", "+75 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"])}>
-                                    <Challenge challengeInfo={["Daybreak Expedition", "+300 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"]}/>
+                                <div
+                                    onClick={(e) => handleChallengeClick(e, ["Daybreak Expedition", "+300 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"])}
+                                >
+                                    <ChallengeCard 
+                                        challengeInfo={["Daybreak Expedition", "+300 Travel Points", "Book a small group day trip through the hotel to explore a nearby destination"]}
+                                        className={completedChallenges.includes("Daybreak Expedition") ? 'completed' : ''}
+                                    />
                                 </div>
-                                <div onClick={(e) => handleChallengeClick(e, ["Tavern Ties", "+50 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"])}>
-                                    <Challenge challengeInfo={["Tavern Ties", "+500 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]}/>
+                                <div
+                                    onClick={(e) => handleChallengeClick(e, ["Tavern Ties", "+500 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"])}
+                                >
+                                    <ChallengeCard 
+                                        challengeInfo={["Tavern Ties", "+500 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]}
+                                        className={completedChallenges.includes("Tavern Ties") ? 'completed' : ''}
+                                    />
                                 </div>
-                                <div onClick={(e) => handleChallengeClick(e, ["Tavern Ties", "+50 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"])}>
-                                    <Challenge challengeInfo={["Swift Sights", "+450 Travel Points", "Join a local pub crawl or happy hour to connect with local townsfolk and fellow adventurers"]}/>
+                                <div
+                                    onClick={(e) => handleChallengeClick(e, ["Swift Sights", "+450 Travel Points", "Join a local biking tour and explore the area"])}
+                                >
+                                    <ChallengeCard 
+                                        challengeInfo={["Swift Sights", "+450 Travel Points", "Join a local biking tour and explore the area"]}
+                                        className={completedChallenges.includes("Swift Sights") ? 'completed' : ''}
+                                    />
                                 </div>
                             </>
                         )}
                     </div>
                     {/* Show the confirm button if a challenge is selected */}
-                    {showConfirmButton && (
+                    {showConfirmButton && !completedChallenges.includes(selectedChallenge[0]) && (
                         <button 
                             className="confirm-button" 
                             onClick={handleConfirmClick}
@@ -140,12 +160,11 @@ export default function Dashboard() {
                     )}
 
                     {confirmButtonClicked && showQRCode && (
-                            <button class="complete-button" onClick={handleCompleteClick}>
-                                Complete {selectedChallenge[0]}
-                            </button>                        
+                        <button className="complete-button" onClick={handleCompleteClick}>
+                            Complete {selectedChallenge[0]}
+                        </button>                        
                     )}
                 </div>
-
             </div>
         </div>
     );

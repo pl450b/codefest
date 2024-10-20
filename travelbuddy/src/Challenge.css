@@ -16,11 +16,24 @@
     min-height: 300px; /* Adjusted for uniform card height */
   }
   
+  .challenge-card.completed {
+    background: #d3d3d3; /* Light grey background for completed challenges */
+    border-color: #b0b0b0; /* Slightly darker grey border */
+    color: #7a7a7a; /* Muted text color */
+    cursor: default; /* Disable hover effect */
+    opacity: 0.7; /* Make the card slightly faded */
+  }
+
   .challenge-card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   }
   
+  .challenge-card.completed:hover {
+    transform: none; /* Disable scale effect on hover for completed cards */
+    box-shadow: none; /* Disable shadow on hover for completed cards */
+  }
+
   .card-header {
     background-color: #f7d1a3;
     padding: 15px;
