@@ -165,9 +165,21 @@ def update_complete_challenge(username, chal_id):
     response = make_response(jsonify({"message": "lord may there be peace on earth"}))
     return response
 
-@app.route('/suggestion', methods=['GET'])
+@app.route('/get-challenges', methods=['GET'])
 def ai_suggestion():
-    print("user wants a ai suggestion")
+    username = get_user_from_token(request.headers.get('sessionToken'))
+
+    selectedChallenge = check_selected_challenge(username)
+
+    if selectedChallenge == NULL:
+        user_profile = get_user_profile(username)
+        suggested_quests = find_matching_quest(user_profile)
+
+        response = make_response(jsonify({"challenges": suggested_quests}))
+    else:
+        response = make_response(jsonify({"challenges": selectedChallenge}))
+
+    return response
 
 
 @app.route('/complete-challenge', methods=['GET'])
