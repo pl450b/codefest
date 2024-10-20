@@ -262,20 +262,12 @@ def update_user_preferences(username, travel_frequency, destination_preference, 
             """
             cursor.execute(query, (travel_frequency, destination_preference, traveler_type, time_preference, documentation_style, username))
         else:
-            # User does not exist: Insert new user and add initial challenge
+            # User does not exist: Insert new user
             query = """
             INSERT INTO user_survey (username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style)
             VALUES (%s, %s, %s, %s, %s, %s);
             """
             cursor.execute(query, (username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style))
-
-            # Add a row for the user's initial challenge
-            initial_challenge = "Welcome Challenge"  # Define an appropriate challenge here
-            challenge_query = """
-            INSERT INTO user_challenges (username, selected_challenge)
-            VALUES (%s, %s);
-            """
-            cursor.execute(challenge_query, (username, initial_challenge))
 
         # Commit the transaction
         connection.commit()
@@ -293,6 +285,7 @@ def update_user_preferences(username, travel_frequency, destination_preference, 
             cursor.close()
         if connection:
             connection.close()
+
 
 
 
