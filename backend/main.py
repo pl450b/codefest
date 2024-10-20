@@ -102,23 +102,24 @@ def record_preferences():
         return jsonify({"message": "Invalid session token"}), 401
 
     # Extract the user preferences from the JSON
-    travel_frequency = data.get('travelFrequency')  # e.g., 'Frequently'
-    travel_destinations = data.get('travelDestinations')  # e.g., ['Beach', 'Mountains']
-    travel_personality = data.get('travelPersonality')  # e.g., 'Somewhat organized'
-    travel_habits = data.get('travelHabits')  # e.g., ['Morning person']
-    documenting_travel = data.get('documentingTravel')  # e.g., 'Social media posts'
+    travel_frequency = data.get('travelFrequency')  # Corresponds to `travel_frequency` column
+    travel_destinations = data.get('travelDestinations')  # Corresponds to `destination_preference` column
+    travel_personality = data.get('travelPersonality')  # Corresponds to `traveler_type` column
+    travel_habits = data.get('travelHabits')  # Corresponds to `time_preference` column
+    documenting_travel = data.get('documentingTravel')  # Corresponds to `documentation_style` column
 
-    # Combine lists into comma-separated strings to store them in the database
-    travel_destinations_str = ", ".join(travel_destinations) if travel_destinations else ""
-    travel_habits_str = ", ".join(travel_habits) if travel_habits else ""
+    # Convert lists to comma-separated strings if they are lists
+    destination_preference_str = ", ".join(travel_destinations) if travel_destinations else ""
+    time_preference_str = ", ".join(travel_habits) if travel_habits else ""
 
-    print(f"[FLASK] {username} preferences: Frequency: {travel_frequency}, Destinations: {travel_destinations_str}, Personality: {travel_personality}, Habits: {travel_habits_str}, Documenting: {documenting_travel}")
+    print(f"[FLASK] {username} preferences: Frequency: {travel_frequency}, Destinations: {destination_preference_str}, Personality: {travel_personality}, Time: {time_preference_str}, Documenting: {documenting_travel}")
 
     # Save preferences to the database
-    if update_user_preferences(username, travel_frequency, travel_destinations_str, travel_personality, travel_habits_str, documenting_travel):
+    if update_user_preferences(username, travel_frequency, destination_preference_str, travel_personality, time_preference_str, documenting_travel):
         return jsonify({"message": "Preferences recorded successfully!"}), 200
     else:
         return jsonify({"message": "Failed to record preferences"}), 500
+
 
 
 @app.route('/confirmchallenge', methods=['POST'])
