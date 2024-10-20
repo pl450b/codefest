@@ -102,8 +102,11 @@ def record_preferences():
     if not username:
         return jsonify({"message": "Invalid session token"}), 401
 
-    # Convert the entire JSON data to a string to store directly
-    preferences_str = json.dumps(data)
+    # Extract the selectedInterests object
+    selected_interests = data.get('selectedInterests')
+
+    # Convert the selectedInterests to a JSON string to store directly
+    preferences_str = json.dumps(selected_interests)
 
     print(f"[FLASK] {username} preferences: {preferences_str}")
 
