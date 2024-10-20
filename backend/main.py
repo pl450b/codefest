@@ -54,9 +54,9 @@ def login():
         token = generate_jwt(user_id)
         add_token(username, token)        
         # Create a response to send back to the client
-        response = make_response(jsonify({"message": "Login successful!"}))
+        response = make_response(jsonify({"user_token": token}))
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
-        response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
+        #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
         
         return response  # Return the response to the client
     else:
@@ -94,7 +94,7 @@ def make_login():
 @app.route('/preferences', methods=['POST'])
 def record_preferences():
     data = request.get_json()
-    print(data)
+    print(data.sessionToken)
     
     response = make_response(jsonify({"message": "New user added!"}))
     return response  # Return the response to the client

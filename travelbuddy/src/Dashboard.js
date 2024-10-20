@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Challenge from './Challenge';
 import './Dashboard.css';
 import Navbar from './Navbar';
@@ -15,6 +15,31 @@ export default function Dashboard() {
     const [confirmButtonClicked, setConfirmButtonClicked] = useState(false);
     const [showQRCode, setShowQRCode] = useState(false);
     const [selectedChallengeUrl, setSelectedChallengeUrl] = useState('');
+
+    useEffect(() => {
+        // Fetch active challenge from the backend
+        fetch(`https://${url}/get-challenges`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Token': `${localStorage.getItem('sessionToken')}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            // if(data.length === 1){
+            //     setCenteredChallenge(data[0]);
+            //     setConfirmButtonClicked(true);
+            // } else {
+                
+            // }
+
+        })
+        .catch(error => {
+            console.error('Error fetching challenges:', error);
+        });
+    }, []);
 
     const generateChallengeUrl = (challengeName) => {
         // Replace this with your backend endpoint
