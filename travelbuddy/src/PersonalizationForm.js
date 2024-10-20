@@ -38,13 +38,12 @@ const TravelForm = () => {
     const ipAddress = '172.31.104.7';
     const port = '5000';
     const url = `http://${ipAddress}:${port}/preferences`;  
-    alert("data sent")
     const response = await fetch(`${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ selectedInterests }),
+        body: JSON.stringify({ sessionToken: localStorage.getItem('sessionToken'),selectedInterests }),
     });
 
     if(response.ok) {
