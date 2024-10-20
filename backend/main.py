@@ -139,8 +139,8 @@ def confirmchallenge():
 
 @app.route('/get_user', methods=['GET'])
 def return_username():
-    data = request.get_json()
-    session_token = data.get('sessionToken')
+    print("got here 6678")
+    session_token = request.headers.get('sessionToken')
     username = get_user_from_token(session_token)
     
     print(f"[FLASK] Sending username {username} from get request")
