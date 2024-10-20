@@ -221,11 +221,9 @@ def check_selected_challenge(username):
         cursor.close()
 
         if not result[0]:
-            print("[DATABASE] No selected challenge")
             return []
 
         # Step 1: Remove the curly braces
-        print("GOING TO CLEAN INPUT")
         clean_string = result[0].strip("{}")
 
         # Step 2: Split by comma to get each element
