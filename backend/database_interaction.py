@@ -233,6 +233,47 @@ def update_selected_challenge(username, selected_challenge):
             connection.close()
 
 
+def update_user_preferences(username, travel_frequency, destination_preference, traveler_type, documentation_style):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Insert or update user preferences in the user_travel_profiles table
+        query = """
+        INSERT INTO user_travel_profiles (username, travel_frequency, destination_preference, traveler_type, documentation_style)
+        VALUES (%s, %s, %s, %s, %s)
+        ON CONFLICT (username) DO UPDATE SET
+        travel_frequency = EXCLUDED.travel_frequency,
+        destination_preference = EXCLUDED.destination_preference,
+        traveler_type = EXCLUDED.traveler_type,
+        documentation_style = EXCLUDED.documentation_style;
+        """
+
+        cursor.execute(query, (username, travel_frequency, destination_preference, traveler_type, documentation_style))
+        connection.commit()
+
+        print(f"[DATABASE] Preferences set for user '{username}'")
+        return True
+
+    except Exception as error:
+        print(f"Error while updating user preferences: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
