@@ -1,7 +1,7 @@
 import jwt
 import os
 import json
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, redirect
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
