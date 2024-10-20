@@ -252,7 +252,7 @@ def update_user_preferences(username, travel_frequency, travel_destinations, tra
         if user_exists:
             # User exists: Update their preferences
             query = """
-            UPDATE user_travel_profiles SET
+            UPDATE user_survey SET
                 travel_frequency = %s,
                 destination_preference = %s,
                 traveler_type = %s,
