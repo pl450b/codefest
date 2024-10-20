@@ -118,7 +118,13 @@ def confirmchallenge():
 
     return response
 
+@app.route('/get_uname', methods=['GET'])
+def return_username():
+    data = request.get_json()
+    session_token = data.get('sessionToken')
+    username = get_user_from_token(session_token)
 
+    print
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
     print("user wants a ai suggestion")
