@@ -56,10 +56,20 @@ const TravelForm = () => {
     // You can replace this with an API call or another action.
   };
 
+  const handleBack = () => {
+    window.history.back(); // Navigate back to the previous page
+  };
+
   return (
       <div class="personalization">
+
+        {/* X Button */}
+        <button type="button" className="close-button" onClick={handleBack}>
+          &times;
+        </button>
+
         <form className="form-container" onSubmit={handleSubmit}>
-          <h2>Tell Us About Your Travel Style</h2>
+          <h2>Tell us about your travel style:</h2>
 
           {/* Travel Frequency */}
           <Category title="How often do you travel?">
