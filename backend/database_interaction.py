@@ -200,6 +200,39 @@ def remove_user(username):
         if connection:
             connection.close()
 
+def check_selected_challenge(username):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Update or set the selected_challenge for the user
+        query = sql.SQL("SELECT sel_challenge FROM user_survey WHERE username = %s;")
+        cursor.execute(query, (username,))
+        
+        result = cursor.fetchone()
+        cursor.close()
+
+        print(f"[DATABASE] Grabed challenge {result[0]} from user {username}")
+
+        return result[0] if result else NONE
+
+    except Exception as error:
+        print(f"Error while finding challenge: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
 
 def update_selected_challenge(username, selected_challenge):
     try:
@@ -214,7 +247,7 @@ def update_selected_challenge(username, selected_challenge):
         cursor = connection.cursor()
 
         # Update or set the selected_challenge for the user
-        query = sql.SQL("UPDATE auth SET sel_challenge = %s WHERE username = %s;")
+        query = sql.SQL("UPDATE user_survey SET sel_challenge = %s WHERE username = %s;")
         cursor.execute(query, (selected_challenge, username))
         connection.commit()
 
@@ -312,6 +345,39 @@ def user_exists_in_survey(username):
             cursor.close()
         if connection:
             connection.close()
+
+
+def mark_challenge_as_complete(username):
+    try:
+        # Connect to the PostgreSQL server
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS
+        )
+        
+        cursor = connection.cursor()
+
+        # Update the `sel_challenge` field to NULL to mark the challenge as complete
+        query = sql.SQL("UPDATE user_survey SET sel_challenge = NULL WHERE username = %s;")
+        cursor.execute(query, (username,))
+        connection.commit()
+
+        print(f"[DATABASE] Challenge marked as complete for user '{username}'")
+        return True
+
+    except Exception as error:
+        print(f"Error while marking challenge as complete: {error}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
 
 
 if __name__ == "__main__":
