@@ -61,6 +61,13 @@
     cursor: pointer;
 }
 
+.challenge-item.completed {
+    opacity: 0.5;
+    pointer-events: none; /* Prevent clicking */
+    cursor: default; /* Change cursor to indicate non-clickable */
+}
+
+
 .complete-button {
     display: block;
     margin: 0px auto;
