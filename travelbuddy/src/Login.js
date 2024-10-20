@@ -25,9 +25,11 @@ export default function Login() {
         const data = await response.json();
         if (response.ok) {
             localStorage.setItem('sessionToken', data.user_token);
+            
+            console.log(data);
 
             // Redirect based on the new_user value
-            console.log(data.new_user)
+            alert(data.new_user)
             if (data.new_user) {
                 window.location.href = '/personalize';
             } else {
