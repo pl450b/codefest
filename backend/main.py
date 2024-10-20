@@ -106,7 +106,7 @@ def confirmchallenge():
     session_token = data.get("sessionToken")
     selected_challenge = data.get("selectedChallenge")
     
-    if session_token and verify_jwt(session_token):
+    if session_token:
         username = get_user_from_token(session_token)
         
         if username:
