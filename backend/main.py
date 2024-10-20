@@ -61,7 +61,7 @@ def login():
         else:
             print("[FLASK] this user has been here before")
         # Create a response to send back to the client
-        response = make_response(jsonify({"user_token": token, "new_user:": new_user}))
+        response = make_response(jsonify({"user_token": token, "new_user": new_user}))
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
         #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
         
