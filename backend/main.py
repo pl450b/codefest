@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, make_response, redirect, url_for
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences, user_exists_in_survey
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences, user_exists_in_survey, check_selected_challenge
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -171,7 +171,7 @@ def ai_suggestion():
 
     selectedChallenge = check_selected_challenge(username)
 
-    if selectedChallenge == NULL:
+    if selectedChallenge == None:
         user_profile = get_user_profile(username)
         suggested_quests = find_matching_quest(user_profile)
 
