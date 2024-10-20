@@ -264,7 +264,7 @@ def update_user_preferences(username, travel_frequency, travel_destinations, tra
         else:
             # User does not exist: Insert new user and add initial challenge
             query = """
-            INSERT INTO user_travel_profiles (username, travel_frequency, destination_preference, traveler_type, travel_habits, documentation_style)
+            INSERT INTO user_survey (username, travel_frequency, destination_preference, traveler_type, travel_habits, documentation_style)
             VALUES (%s, %s, %s, %s, %s, %s);
             """
             cursor.execute(query, (username, travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel))
@@ -272,7 +272,7 @@ def update_user_preferences(username, travel_frequency, travel_destinations, tra
             # Add a row for the user's initial challenge
             initial_challenge = "Welcome Challenge"  # Define an appropriate challenge here
             challenge_query = """
-            INSERT INTO user_challenges (username, selected_challenge)
+            INSERT INTO user_survey (username, selected_challenge)
             VALUES (%s, %s);
             """
             cursor.execute(challenge_query, (username, initial_challenge))
