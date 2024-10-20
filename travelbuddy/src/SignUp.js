@@ -25,7 +25,7 @@ export default function SignUp() {
         const data = await response.json();
 
         if (response.ok) {
-            alert("User created!");
+            console.log("User created!");
             window.location.href = '/login'; // Redirect to login screen
         } else {
             setErrorMessage(data.message); // Update error message
