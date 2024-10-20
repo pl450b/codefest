@@ -105,7 +105,10 @@ def record_preferences():
 def confirmchallenge():
     data = request.get_json()
     print(data)
-    
+
+    response = make_response(jsonify({"message": "New user added!"}))
+    return response
+
 @app.route('/suggestion', methods=['GET'])
 def ai_suggestion():
     print("user wants a ai suggestion")
