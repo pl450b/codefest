@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, make_response, redirect, url_for
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences, user_exists_in_survey
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -53,9 +53,15 @@ def login():
         user_id = 1  # Replace with actual user ID
         # Generate a JWT for the authenticated user
         token = generate_jwt(user_id)
-        add_token(username, token)        
+        add_token(username, token)       
+        new_user = user_exists_in_survey(username)
+        new_user = not new_user
+        if new_user:
+            print("[FLASK] new user!")
+        else:
+            print("[FLASK] this user has been here before")
         # Create a response to send back to the client
-        response = make_response(jsonify({"user_token": token}))
+        response = make_response(jsonify({"user_token": token, "new_user:": new_user}))
         # Set a cookie named 'user_token' with the generated JWT, expiring in 2 days
         #response.set_cookie('user_token', token, max_age=timedelta(days=2), httponly=True, secure=True)
         
