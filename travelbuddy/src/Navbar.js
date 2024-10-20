@@ -17,7 +17,7 @@ const Navbar = () => {
                 <Link to="/dashboard" class="nav-link"><li>Dashboard</li></Link>
                 <Link to="/personalize" class="nav-link"><li>Personalize</li></Link>
                 <Link to="/profile" class="nav-link"><li>Profile</li></Link>                
-                <Link to="/login" onCick={SignOut} class="nav-link"><li>Sign Out</li></Link>
+                <Link to="/login" onClick={SignOut} class="nav-link"><li>Sign Out</li></Link>
             </ul>
             <img src={profilePic} alt="" class="profile_pic"/>
 

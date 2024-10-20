@@ -96,7 +96,8 @@ def record_preferences():
     data = request.get_json()
     token = data.get('sessionToken')
     username = get_user_from_token(token)
-    print(f"Token: {token}, username {username}")
+    preferences = data.get('selectedInterests')
+    print(f"[FLASK] {username} preferences: {preferences}")
     
     response = make_response(jsonify({"message": "New user added!"}))
     return response  # Return the response to the client
@@ -106,10 +107,13 @@ def record_preferences():
 def confirmchallenge():
     data = request.get_json()
     session_token = data.get('sessionToken')
-    print(session_token)
     selected_challenge = data.get('selectedChallenge')
-    
     username = get_user_from_token(session_token)
+    
+    print(f"[FLASK] User {username} accepted {selected_challenge}")
+    
+    update_selected_challenge(username, selected_challenge)
+
     response = make_response(jsonify({"message": "Challenge recorded"}))
 
     return response

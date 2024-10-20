@@ -108,7 +108,7 @@ def get_user_from_token(token):
 
         cursor = connection.cursor()
 
-        query = "SELECT username FROM users WHERE token = %s;"
+        query = "SELECT username FROM auth WHERE token = %s;"
 
         cursor.execute(query, (token,))
 

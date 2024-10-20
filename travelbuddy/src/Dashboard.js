@@ -15,6 +15,7 @@ export default function Dashboard() {
     const [showQRCode, setShowQRCode] = useState(false);
     const [selectedChallengeUrl, setSelectedChallengeUrl] = useState('');
     const [completedChallenges, setCompletedChallenges] = useState([]); // Track completed challenges
+    const [challengesList, setChallengesList] = useState(null);
 
     useEffect(() => {
         // Fetch active challenge from the backend
@@ -27,7 +28,13 @@ export default function Dashboard() {
         })
         .then(response => response.json())
         .then(data => {
-            // Process fetched challenges
+            if(data.length === 1){
+                setCenteredChallenge(data[0]);
+                setConfirmButtonClicked(true);
+            }
+            else{
+                setChallengesList(data);
+            }
         })
         .catch(error => {
             console.error('Error fetching challenges:', error);
