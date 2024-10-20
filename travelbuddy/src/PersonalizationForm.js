@@ -59,7 +59,7 @@ const TravelForm = () => {
 
   return (
       <div class="personalization">
-        <form className="container" onSubmit={handleSubmit}>
+        <form className="form-container" onSubmit={handleSubmit}>
           <h2>Tell Us About Your Travel Style</h2>
 
           {/* Travel Frequency */}

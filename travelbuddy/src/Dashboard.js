@@ -54,15 +54,6 @@ export default function Dashboard() {
         const data = await response.json();
 
         console.log(data)
-
-        if (response.ok) {
-            // Store the JWT in localStorage
-            alert("User created!")
-            window.location.href = '/login'; // Redirect to login screen
-        } else {
-            alert(data.message);
-        }
-
     };
 
     const handleCompleteClick = () => {

@@ -1,7 +1,7 @@
 .navbar {
     width: 100%;
     margin: 0;
-    padding: 20px 20px; /* Add padding to create space on the left and right */
+    padding: 10px 20px; /* Add padding to create space on the left and right */
     display: flex;
     justify-content: center;
     align-items: center;
