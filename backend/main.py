@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, make_response, redirect, url_for
 from flask_cors import CORS
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences, user_exists_in_survey, check_selected_challenge
+from database_interaction import attempt_login, add_user, add_token, get_user_from_token, update_selected_challenge, update_user_preferences, user_exists_in_survey, check_selected_challenge, clear_selected_challenge
 from ai import *
 # Load environment variables from .env file
 load_dotenv()
@@ -151,7 +151,7 @@ def return_username():
     return response
 
     print
-
+# One option for qrcode scanning
 @app.route('/user/<username>/challenge/<int:chal_id>', methods=['POST'])
 def update_complete_challenge(username, chal_id):
     session_token = request.headers.get('sessionToken')
@@ -177,13 +177,29 @@ def ai_suggestion():
 
         response = make_response(jsonify({"challenges": suggested_quests}))
     else:
+        print("WE HAVE ENDED UP HERE.")
+        print(selectedChallenge)
         response = make_response(jsonify({"challenges": selectedChallenge}))
 
     return response
 
+@app.route('/completechallenge', methods=['POST'])
+def complete_challenge():
+    print("[FLASK] Arrived at complete_challenge()")
+    username = get_user_from_token(reques.headers.get('sessionToken'))
+    
+    status = clear_selected_challenge(username)
+
+    if status:
+        print("[FLASK] challenge completed")
+        response = make_response(jsonify({"message": "clear sucessfull!"}))
+    else:
+        print("[FLASK] something failed during challenge completion")
+        response = make_response(jsonify({"message": "clear unsucessfull"}))
+    return response
 
 @app.route('/complete-challenge', methods=['GET'])
-def complete_challenge():
+def complete_challenge_future():
     # Get user information from the URL parameters
     username = request.args.get('user')
     

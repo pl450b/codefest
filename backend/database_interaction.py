@@ -221,9 +221,11 @@ def check_selected_challenge(username):
         cursor.close()
 
         if not result[0]:
+            print("RESULT IS EMPTY")
             return []
 
         # Step 1: Remove the curly braces
+        print("GOING TO CLEAN INPUT")
         clean_string = result[0].strip("{}")
 
         # Step 2: Split by comma to get each element
@@ -232,7 +234,13 @@ def check_selected_challenge(username):
         # Step 3: Remove quotes and extra spaces from each element
         array = [element.strip().strip('"') for element in elements]
 
-        return array
+        elem1 = array[1]
+
+        array[1] = array[2]
+
+        array[2] = elem1
+
+        return [array]
 
     except Exception as error:
         print(f"Error while finding challenge: {error}")
@@ -358,7 +366,7 @@ def user_exists_in_survey(username):
             connection.close()
 
 
-def mark_challenge_as_complete(username):
+def clear_selected_challenge(username):
     try:
         # Connect to the PostgreSQL server
         connection = psycopg2.connect(
@@ -394,7 +402,7 @@ def mark_challenge_as_complete(username):
 if __name__ == "__main__":
     while True:
         print("\n----------------------------")
-        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n4) Remove User\n5) Check User Challenge\n")
+        print("Select functionality to test\n1) Hashing\n2) Creating User\n3) Login\n4) Remove User\n5) Check User Challenge\n6) Clear selected challenge\n")
         
         selection = input()
 
@@ -433,3 +441,12 @@ if __name__ == "__main__":
             result = check_selected_challenge(test_username)
 
             print(result)
+
+        if(selection == '6'):
+            test_username = input("Enter username: ")
+            result = clear_selected_challenge(test_username)
+
+            if result:
+                print("Function said it workd")
+            else:
+                print("Funtion returned false")
