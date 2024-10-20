@@ -233,7 +233,7 @@ def update_selected_challenge(username, selected_challenge):
             connection.close()
 
 
-def update_user_preferences(username, travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel):
+def update_user_preferences(username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style):
     try:
         # Connect to the PostgreSQL server
         connection = psycopg2.connect(
@@ -256,23 +256,23 @@ def update_user_preferences(username, travel_frequency, travel_destinations, tra
                 travel_frequency = %s,
                 destination_preference = %s,
                 traveler_type = %s,
-                travel_habits = %s,
+                time_preference = %s,
                 documentation_style = %s
             WHERE username = %s;
             """
-            cursor.execute(query, (travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel, username))
+            cursor.execute(query, (travel_frequency, destination_preference, traveler_type, time_preference, documentation_style, username))
         else:
             # User does not exist: Insert new user and add initial challenge
             query = """
-            INSERT INTO user_survey (username, travel_frequency, destination_preference, traveler_type, travel_habits, documentation_style)
+            INSERT INTO user_survey (username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style)
             VALUES (%s, %s, %s, %s, %s, %s);
             """
-            cursor.execute(query, (username, travel_frequency, travel_destinations, travel_personality, travel_habits, documenting_travel))
+            cursor.execute(query, (username, travel_frequency, destination_preference, traveler_type, time_preference, documentation_style))
 
             # Add a row for the user's initial challenge
             initial_challenge = "Welcome Challenge"  # Define an appropriate challenge here
             challenge_query = """
-            INSERT INTO user_survey (username, selected_challenge)
+            INSERT INTO user_challenges (username, selected_challenge)
             VALUES (%s, %s);
             """
             cursor.execute(challenge_query, (username, initial_challenge))
@@ -293,6 +293,7 @@ def update_user_preferences(username, travel_frequency, travel_destinations, tra
             cursor.close()
         if connection:
             connection.close()
+
 
 
 
